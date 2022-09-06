@@ -75,18 +75,18 @@ ix.command.Add("DoorKick", {
 		end)
 		
 		-- Respawn the door after a while.
-		timer.Simple(30, function()
+		timer.Simple(8, function()
 			if (IsValid(physdoor) and physdoor ~= nil) then
 				SafeRemoveEntity(physdoor)
 			end
 
 			newdoor = ents.Create("prop_door_rotating")
 			newdoor:SetModel(model)
+			newdoor:Spawn()
 			newdoor:SetSkin(skin)
 			newdoor:SetBodygroup(1, body)
 			newdoor:SetPos(pos)
 			newdoor:SetAngles(angles)
-			newdoor:Spawn()
 		end)
 
 		client:ForceSequence("kickdoorbaton", nil, 3)
