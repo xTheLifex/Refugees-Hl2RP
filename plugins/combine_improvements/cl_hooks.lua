@@ -97,10 +97,10 @@ function PLUGIN:HUDPaint()
 
     local CitizenManifest = table.concat(AllCitizens, "\n")
     local UnitManifest = table.concat(AllUnits, "\n")
-    draw.DrawText("Citizen Manifest: \n" .. CitizenManifest .. "\n\n\n" .. "Unit Manifest: \n" .. UnitManifest, "BudgetLabel", ScrW() - 200, ScrH() / 8, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+    //draw.DrawText("Citizen Manifest: \n" .. CitizenManifest .. "\n\n\n" .. "Unit Manifest: \n" .. UnitManifest, "BudgetLabel", ScrW() - 200, ScrH() / 8, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
     local List = table.concat(self.BOL, "\n")
-    draw.SimpleText("Sociostatus: " .. NewStatus, "BudgetLabel", ScrW() - 200, 6, StatusCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
-    draw.DrawText("BOL: \n" .. List, "BudgetLabel", ScrW() - 200, 30, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+    //draw.SimpleText("Sociostatus: " .. NewStatus, "BudgetLabel", ScrW() - 200, 6, StatusCol, TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
+    //draw.DrawText("BOL: \n" .. List, "BudgetLabel", ScrW() - 200, 30, Color(255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_LEFT)
     for client, char in ix.util.GetCharacters() do
       local bone = client:LookupBone("ValveBiped.Bip01_Head1")
       local bonepos
