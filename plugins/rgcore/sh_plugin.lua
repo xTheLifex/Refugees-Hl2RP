@@ -25,3 +25,4 @@ PLUGIN.maxLength = 512
 ix.util.Include("sub/sh_footsteps.lua")
 ix.util.Include("sub/sh_gestures.lua")
 ix.util.Include("sub/sh_commands.lua")
+ix.util.Include("sub/sh_voicecommands.lua")
