@@ -4,6 +4,29 @@ ix.config.Add("radioVCAllow", true, "Allow voice commands to be used on the radi
 ix.config.Add("radioVCVolume", 60, "Sets the volume, radio voice commands are played back for receivers. This is lower than normal as it's coming through a radio.", nil, {category = PLUGIN.name, data = {min = 0, max = 200}})
 ix.config.Add("radioVCClientOnly", false, "If set to true, radio voice commands receivers will hear the voice commands only clientside, so nobody around them can hear it.", nil, {category = PLUGIN.name})
 
+sound.Add({
+    name = "OverwatchRadio.On",
+    channel = CHAN_STATIC,
+    volume = 1,
+    level = 60,
+    sound = {
+        "npc/combine_soldier/vo/on1.wav",
+        "npc/combine_soldier/vo/on2.wav"
+    }
+})
+
+sound.Add({
+    name = "OverwatchRadio.Off",
+    channel = CHAN_STATIC,
+    volume = 1,
+    level = 60,
+    sound = {
+        "npc/combine_soldier/vo/off1.wav",
+        "npc/combine_soldier/vo/off2.wav",
+        "npc/combine_soldier/vo/off3.wav"
+    }
+})
+
 if (CLIENT) then
     netstream.Hook("PlayQueuedSound", function(entity, sounds, delay, spacing, volume, pitch)
         entity = entity or LocalPlayer()
@@ -14,6 +37,9 @@ end
 
 
 if (SERVER) then
+    local PLUGIN = PLUGIN
+    PLUGIN.TempStored = PLUGIN.TempStored or {}
+    
     -- if no separator then just seperate at spaces
     local function GetVoiceCommands(text, class, separator)
         local strings = string.Explode(separator or " ", text)
@@ -142,9 +168,19 @@ if (SERVER) then
                     if k2 == #texts then
                         if table.IsEmpty(sounds) then break end
 
+                        if (speaker:Team() == FACTION_MPF) then
+                            sounds = {"NPC_MetroPolice.Radio.On", unpack(sounds)}
+                        elseif (speaker:Team() == FACTION_OTA) then
+                            sounds = {"OverwatchRadio.On", unpack(sounds)}
+                        end
+
                         if speaker:IsCombine() and !isGlobal then
                             speaker.bTypingBeep = nil
-                            table.insert(sounds, "NPC_MetroPolice.Radio.Off")
+                            if (speaker:Team() == FACTION_MPF) then
+                                table.insert(sounds, "NPC_MetroPolice.Radio.Off")
+                            elseif(speaker:Team() == FACTION_OTA) then
+                                table.insert(sounds, "OverwatchRadio.Off")
+                            end
                         end
 
                         local _ = !isGlobal and ix.util.EmitQueuedSounds(speaker, sounds, nil, nil, volume) or netstream.Start(nil, "PlayQueuedSound", nil, sounds, nil, nil, volume)

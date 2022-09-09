@@ -71,8 +71,7 @@ function PLUGIN:PhysgunDrop( client, entity )
   end
 end
 
--- Overriding Schema otherwise the sound will be doubled
-function Schema:PlayerDeath( client, inf, attacker )
+function PLUGIN:PlayerDeath( client, inf, attacker )
   if ( !client:IsCombine() ) then
     return
   end

@@ -135,12 +135,70 @@ function Schema:PlayerSpawn(client)
 	client:SetCanZoom(client:IsCombine())
 end
 
+
+local function GetPosGrid(pos)
+	local x = math.Round(pos.x/500)
+	local y = math.Round(pos.y/500)
+	local z = math.Round(pos.z/500)+64
+
+	return "[" .. x .. " " .. z .. " " .. y .. "]"
+end
+
+local function GetBearing(client)
+	local angle = client:EyeAngles()
+	local bearing = math.Round(angle.y)+180
+	return bearing
+end
+
+local meter = 0.01905
+
+local function GetRange(client)
+	local tr = util.TraceLine( {
+		start = client:EyePos(),
+		endpos = client:EyePos() + client:EyeAngles():Forward() * 10000,
+		filter = function( ent ) return (ent != client) end
+	} )
+
+	local distance = math.Round(tr.HitPos:Distance(client:GetPos()))
+	local meters = math.Round(distance*meter)
+	local text = meters .. "m"
+
+	local hit = tr.HitPos
+
+	if (meters > 500) then
+		return "ERR", col_red, false, hit
+	end
+
+	if (meters > 100) then
+		return text, col_red, true, hit
+	end
+
+	if (meters > 50) then
+		return text, col_yellow, true, hit
+	end
+
+	if (meters < 5) then
+		return text, col_red, true, hit
+	end
+
+	if (meters < 20) then
+		return text, col_yellow, true, hit
+	end
+
+
+
+	return text, col_white, true, hit
+end
+
 function Schema:PlayerDeath(client, inflicter, attacker)
 	if (client:IsCombine()) then
-		local location = client:GetArea() or "unknown location"
+		local location = GetPosGrid(client:GetPos())
 
-		self:AddCombineDisplayMessage("@cLostBiosignal")
-		self:AddCombineDisplayMessage("@cLostBiosignalLocation", Color(255, 0, 0, 255), location)
+		//self:AddCombineDisplayMessage("@cLostBiosignal")
+		local tag = client:CIGetTag() or "ERR"
+		local id = client:CIGetID() or "0"
+		local unit = tag .. "-" .. id
+		self:AddCombineDisplayMessage("WARNING! Biosignal lost for protection team unit " .. unit .. " at... " .. location .. ".", Color(255, 0, 0, 255))
 
 		if (IsValid(client.ixScanner) and client.ixScanner:Health() > 0) then
 			client.ixScanner:TakeDamage(999)
