@@ -112,7 +112,7 @@ do
 				newdoor:SetAngles(angles)
 			end)
 
-			client:ForceSequence("kickdoorbaton", nil, 3)
+			client:ForceSequence("kickdoorbaton")
 			
 		end
 	})
