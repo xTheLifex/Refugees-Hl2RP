@@ -6,6 +6,7 @@ function PLUGIN:AddFactionCall( enum, call )
 end
 
 local col_white = Color( 255, 255, 255 )
+local col_blue = Color(25, 101, 172)
 local col_red = Color( 255, 0, 0 )
 
 local function fCitizen( client )
@@ -70,8 +71,8 @@ local function fCitizen( client )
   mult = mult + ( bol and 30 or 0 )
 
   cam.PushModelMatrix( m )
-    draw.SimpleText( "<:: CID: #" .. cid .. " ::>", "CHudLabel", client.toScreenX, client.toScreenY, col_white, TEXT_ALIGN_CENTER )
-    draw.SimpleText( "<:: Status: " .. status .. " ::>", "CHudLabel", client.toScreenX, client.toScreenY + 30, col, TEXT_ALIGN_CENTER )
+    draw.SimpleText( "<:: CID: #" .. cid .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY, col_white, TEXT_ALIGN_CENTER )
+    draw.SimpleText( "<:: Status: " .. status .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY + 30, col, TEXT_ALIGN_CENTER )
   cam.PopModelMatrix()
 
   -- If it gets to the end make sure you almost always return the inRange or mult value
@@ -91,7 +92,7 @@ local function fMetropolice( client )
     pos = client:GetBonePosition( bone ) + Vector( 0, 0, 14 )
   end
 
-  local inRange = false
+  local inRange = true
   local mult = -15
 
   if ( !LocalPlayer():IsLineOfSightClear( client ) ) then
@@ -132,11 +133,11 @@ local function fMetropolice( client )
 
   local useTag = ix.config.Get( "Use Taglines", false )
   cam.PushModelMatrix( m )
-    draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "CHudLabel", client.toScreenX, client.toScreenY + 30, col_white, TEXT_ALIGN_CENTER )
+    draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY + 15, col_blue, TEXT_ALIGN_CENTER )
     if ( useTag ) then
-      draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. id .. " ::>", "CHudLabel", client.toScreenX, client.toScreenY, col_white, TEXT_ALIGN_CENTER )
+      draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. id .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY, col_blue, TEXT_ALIGN_CENTER )
     else
-      draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "CHudLabel", client.toScreenX, client.toScreenY, col_white, TEXT_ALIGN_CENTER )
+      draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY, col_blue, TEXT_ALIGN_CENTER )
     end
   cam.PopModelMatrix()
   return inRange, mult

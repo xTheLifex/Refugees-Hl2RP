@@ -70,6 +70,60 @@ local col_green = Color( 0, 255, 0 )
 local col_yellow = Color( 255, 255, 0 )
 local col_red = Color( 255, 0, 0 )
 
+local function GetPosGrid(pos)
+  local x = math.Round(pos.x/500)
+  local y = math.Round(pos.y/500)
+  local z = math.Round(pos.z/500)+64
+
+  return "[" .. x .. " " .. z .. " " .. y .. "]"
+end
+
+local function GetBearing()
+  local angle = client:EyeAngles()
+  local bearing = math.Round(angle.y)+180
+  return bearing
+end
+
+local meter = 0.01905
+
+local function GetRange()
+  local tr = util.TraceLine( {
+    start = client:EyePos(),
+    endpos = client:EyePos() + client:EyeAngles():Forward() * 10000,
+    filter = function( ent ) return (ent != client) end
+  } )
+
+  local distance = math.Round(tr.HitPos:Distance(client:GetPos()))
+  local meters = math.Round(distance*meter)
+  local text = meters .. "m"
+
+  local hit = tr.HitPos
+
+  if (meters > 500) then
+    return "ERR", col_red, false, hit
+  end
+
+  if (meters > 100) then
+    return text, col_red, true, hit
+  end
+
+  if (meters > 50) then
+    return text, col_yellow, true, hit
+  end
+
+  if (meters < 5) then
+    return text, col_red, true, hit
+  end
+
+  if (meters < 20) then
+    return text, col_yellow, true, hit
+  end
+
+
+
+  return text, col_white, true, hit
+end
+
 function PLUGIN:HUDPaint()
   if ( !IsValid( client ) ) then
     client = LocalPlayer()
@@ -89,9 +143,19 @@ function PLUGIN:HUDPaint()
 
   local projectedThreat = 0
   local area = LocalPlayer():GetArea() or "NULL"
-  draw.SimpleText( "Sociostatus: " .. self.SocioStatus, "CHudLabel", ScrW() - 10, 5, socioColor, TEXT_ALIGN_RIGHT )
-  draw.SimpleText( "Current Location: " .. area, "CHudLabel", ScrW() - 10, 85, col_white, TEXT_ALIGN_RIGHT )
-  draw.DrawText( "BOL:", "CHudLabel", ScrW() - 10, 125, col_white, TEXT_ALIGN_RIGHT )
+  
+  local basepos = 5
+  local spacing = 25
+  local range, range_color, validrange, hit = GetRange()
+  local rangepos = "[ ERROR ]"
+  if (validrange) then rangepos = GetPosGrid(hit) end
+  draw.SimpleText( "Sociostatus: " .. self.SocioStatus, "CHudLabel", ScrW() - 10, basepos, socioColor, TEXT_ALIGN_RIGHT )
+  draw.SimpleText( "Current Location: " .. area, "CHudLabel", ScrW() - 10, basepos+spacing*2, col_white, TEXT_ALIGN_RIGHT )
+  draw.SimpleText( "Position Grid: " .. GetPosGrid(client:GetPos()), "CHudLabel", ScrW() - 10, basepos+spacing*3, col_white, TEXT_ALIGN_RIGHT )
+  draw.SimpleText( "Bearing: " .. GetBearing(), "CHudLabel", ScrW() - 10, basepos+spacing*4, col_white, TEXT_ALIGN_RIGHT )
+  draw.SimpleText( "Rangefinder: " .. range, "CHudLabel", ScrW() - 10, basepos+spacing*5, range_color, TEXT_ALIGN_RIGHT )
+  draw.SimpleText( "Rangefinder: " .. rangepos, "CHudLabel", ScrW() - 10, basepos+spacing*6, range_color, TEXT_ALIGN_RIGHT )
+  draw.DrawText( "BOL:", "CHudLabel", ScrW() - 10, basepos+spacing*7, col_white, TEXT_ALIGN_RIGHT )
 
   self.BOLPos = self.BOLPos or { }
 
@@ -164,5 +228,5 @@ function PLUGIN:HUDPaint()
   elseif ( self.threat > 100 ) then
     color = Color(tsin, tsin, tsin)
   end
-  draw.DrawText( "Threat Assessment: " .. self.threat .. "%", "CHudLabel", ScrW() - 10, 45, color, TEXT_ALIGN_RIGHT )
+  draw.DrawText( "Threat Assessment: " .. self.threat .. "%", "CHudLabel", ScrW() - 10, basepos+spacing*1, color, TEXT_ALIGN_RIGHT )
 end
