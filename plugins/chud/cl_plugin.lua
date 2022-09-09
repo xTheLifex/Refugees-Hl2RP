@@ -8,7 +8,7 @@ end
 local col_white = Color( 255, 255, 255 )
 local col_blue = Color(25, 101, 172)
 local col_red = Color( 255, 0, 0 )
-
+local col_ota = Color( 150, 70, 70)
 local function fCitizen( client )
   if ( !IsValid( client ) ) then
     return
@@ -143,3 +143,67 @@ local function fMetropolice( client )
   return inRange, mult
 end
 PLUGIN:AddFactionCall( FACTION_MPF, fMetropolice )
+
+local function fOverwatch( client )
+  if ( !IsValid( client ) ) then
+    return
+  end
+  local bone = client:LookupBone( "ValveBiped.Bip01_Head1" )
+  local pos
+  if ( !bone ) then
+    pos = client:GetPos() + Vector( 0, 0, 72 )
+  else
+    pos = client:GetBonePosition( bone ) + Vector( 0, 0, 14 )
+  end
+
+  local inRange = true
+  local mult = -15
+
+  if ( !LocalPlayer():IsLineOfSightClear( client ) ) then
+    return
+  end
+
+  local distSquared = 224^2
+
+  local toScreen = pos:ToScreen()
+
+  if ( LocalPlayer():GetPos():DistToSqr( client:GetPos() ) > distSquared ) then
+    client.mult = Lerp( 0.02, client.mult or 0, 0 )
+  else
+    client.mult = Lerp( 0.02, client.mult or 0, 1 )
+    inRange = true
+  end
+
+  toScreen.x = math.Clamp( toScreen.x, -200, ScrW() + 200 )
+  toScreen.y = math.Clamp( toScreen.y, -50, ScrH() + 50 )
+
+
+  client.toScreenX = Lerp( 0.06, client.toScreenX or toScreen.x, toScreen.x )
+  client.toScreenY = Lerp( 0.06, client.toScreenY or toScreen.y, toScreen.y )
+
+  local m = Matrix()
+  local mPos = Vector( client.toScreenX, client.toScreenY )
+  m:Translate( mPos )
+  local scale = client.mult * ( Vector(1, 1, 1) * ( 90/LocalPlayer():GetPos():Distance( client:GetPos() ) ) )
+  m:Scale( scale )
+  m:Translate( -mPos )
+
+  local rank = client:CIGetRank() or "???"
+
+  local id = client:CIGetID() or "???"
+
+  local tag = client:CIGetTag() or "???"
+
+
+  local useTag = ix.config.Get( "Use Taglines", false )
+  cam.PushModelMatrix( m )
+    draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY + 15, col_ota, TEXT_ALIGN_CENTER )
+    if ( useTag ) then
+      draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. id .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY, col_ota, TEXT_ALIGN_CENTER )
+    else
+      draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", client.toScreenX, client.toScreenY, col_ota, TEXT_ALIGN_CENTER )
+    end
+  cam.PopModelMatrix()
+  return inRange, mult
+end
+PLUGIN:AddFactionCall( FACTION_OTA, fOverwatch) 

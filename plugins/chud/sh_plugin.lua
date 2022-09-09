@@ -15,6 +15,8 @@ PLUGIN.ranks = {
   [ "i2" ] = false,
   [ "i1" ] = false,
   [ "RL" ] = true,
+  [ "EOW" ] = true,
+  [ "OWS" ] = true,
   [ "DISP" ] = true,
 }
 
