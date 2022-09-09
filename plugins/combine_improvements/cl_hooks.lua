@@ -161,7 +161,7 @@ function PLUGIN:HUDPaint()
         end
 
         if !unitdigits or !division or !unitrank then
-          draw.SimpleText(":: WARNING MALFORMED UNIT SIGNAL ::", "BudgetLabel", ToScreen.x, ToScreen.y, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+          //draw.SimpleText(":: WARNING MALFORMED UNIT SIGNAL ::", "BudgetLabel", ToScreen.x, ToScreen.y, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
           return
         end
 
@@ -193,7 +193,7 @@ function PLUGIN:HUDPaint()
         local unitrank = string.match(client:GetName(), "OWS") or string.match(client:GetName(), "EOW")
 
         if !unitdigits or !division or !unitrank then
-          draw.SimpleText(":: WARNING MALFORMED UNIT SIGNAL ::", "BudgetLabel", ToScreen.x, ToScreen.y, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+          //draw.SimpleText(":: WARNING MALFORMED UNIT SIGNAL ::", "BudgetLabel", ToScreen.x, ToScreen.y, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
           return
         end
 
