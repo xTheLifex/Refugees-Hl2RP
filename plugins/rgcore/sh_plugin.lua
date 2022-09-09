@@ -21,4 +21,7 @@ PLUGIN.description = "The Refugees Core module, contains features shared with al
 PLUGIN.author = "TheLife"
 PLUGIN.maxLength = 512
 
-ix.util.Include("gestures/sh_gestures.lua")
+-- Submodules
+ix.util.Include("sub/sh_footsteps.lua")
+ix.util.Include("sub/sh_gestures.lua")
+ix.util.Include("sub/sh_commands.lua")
