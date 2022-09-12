@@ -9,6 +9,7 @@ FACTION.isDefault = false
 FACTION.isGloballyRecognized = true
 FACTION.runSounds = {[0] = "NPC_MetroPolice.RunFootstepLeft", [1] = "NPC_MetroPolice.RunFootstepRight"}
 FACTION.walkSounds = {[0] = "NPC_MetroPolice.FootstepLeft", [1] = "NPC_MetroPolice.FootstepRight"}
+
 function FACTION:OnCharacterCreated(client, character)
 	local inventory = character:GetInventory()
 
@@ -17,7 +18,7 @@ function FACTION:OnCharacterCreated(client, character)
 end
 
 function FACTION:GetDefaultName(client)
-	return "MPF-RCT." .. Schema:ZeroNumber(math.random(1, 99999), 5), true
+	return "C03:RCT-" .. Schema:ZeroNumber(math.random(1, 9999), 4), true
 end
 
 function FACTION:OnTransferred(character)
@@ -26,8 +27,8 @@ function FACTION:OnTransferred(character)
 end
 
 function FACTION:OnNameChanged(client, oldValue, value)
-	local character = client:GetCharacter()
-
+	--local character = client:GetCharacter()
+	--[[
 	if (!Schema:IsCombineRank(oldValue, "RCT") and Schema:IsCombineRank(value, "RCT")) then
 		character:JoinClass(CLASS_MPR)
 	elseif (!Schema:IsCombineRank(oldValue, "OfC") and Schema:IsCombineRank(value, "OfC")) then
@@ -48,6 +49,7 @@ function FACTION:OnNameChanged(client, oldValue, value)
 	if (!Schema:IsCombineRank(oldValue, "GHOST") and Schema:IsCombineRank(value, "GHOST")) then
 		character:SetModel("models/eliteghostcp.mdl")
 	end
+	]]
 end
 
 FACTION_MPF = FACTION.index

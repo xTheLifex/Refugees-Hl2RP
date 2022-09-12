@@ -24,5 +24,13 @@ PLUGIN.maxLength = 512
 -- Submodules
 ix.util.Include("sub/sh_footsteps.lua")
 ix.util.Include("sub/sh_gestures.lua")
+ix.util.Include("sub/sh_damage.lua")
 ix.util.Include("sub/sh_commands.lua")
 ix.util.Include("sub/sh_voicecommands.lua")
+
+if (SERVER) then
+   function PLUGIN:ScalePlayerDamage(ply, hitgroup, dmginfo)
+      self:DoDamageScaling(ply, hitgroup, dmginfo)
+      self:DoDamageFlinch(ply, hitgroup, dmginfo)
+   end
+end

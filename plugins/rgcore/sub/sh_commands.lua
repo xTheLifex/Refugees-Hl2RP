@@ -29,3 +29,4 @@ end
 function PLUGIN:GetMaxPlayerCharacter(client)
     return client:GetData("customMaxCharacters", ix.config.Get("maxCharacters", 5))
 end
+
