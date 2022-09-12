@@ -90,7 +90,7 @@ if (CLIENT) then
 
       local soundEnabled = ix.option.Get("hearHeadshotSound", true)
 
-      if (soundEnabled and ply:IsCombine()) then
+      if (soundEnabled and ply:IsCombine() and headshot) then
          ply:EmitSound("player/bhit_helmet-1.wav")
       end
 

@@ -54,12 +54,6 @@ do
 			local hit = {pos = tr.HitPos, normal = tr.HitNormal}
 
 			local door = tr.Entity
-			local model = door:GetModel()
-			local skin = door:GetSkin()
-			local body = door:GetBodygroup(1)
-			local pos = door:GetPos()
-			local angles = door:GetAngles()
-
 
 			-- Fail if door has combine lock
 			if (IsValid(door.ixLock) and door.ixLock ~= nil) then
@@ -70,46 +64,8 @@ do
 
 			-- Door removal
 			timer.Simple(1.25, function() 
-				
-				-- Remove the original door.
-				SafeRemoveEntity(door)
-
-				-- Spawn a physics prop with the door model
-				physdoor = ents.Create("prop_physics")
-				physdoor:SetModel(model)
-				physdoor:SetSkin(skin)
-				physdoor:SetBodygroup(1, body)
-				physdoor:SetPos(pos)
-				physdoor:SetAngles(angles)
-				physdoor:Spawn()
-
-				-- Get physics object and remove if invalid
-				local phys = physdoor:GetPhysicsObject()
-				if (not phys:IsValid() ) then
-					physdoor:Remove()
-					return
-				end
-				
-				-- Launch door forwards.
-				phys:ApplyForceCenter(aimVector * 20000)
-
+				door:BlastDoor(aimVector * 750)
 				client:EmitSound(sounds[math.random(#sounds)])
-
-			end)
-			
-			-- Respawn the door after a while.
-			timer.Simple(30, function()
-				if (physdoor and IsValid(physdoor)) then
-					physdoor:Remove()
-				end
-
-				newdoor = ents.Create("prop_door_rotating")
-				newdoor:SetModel(model)
-				newdoor:Spawn()
-				newdoor:SetSkin(skin)
-				newdoor:SetBodygroup(1, body)
-				newdoor:SetPos(pos)
-				newdoor:SetAngles(angles)
 			end)
 
 			client:ForceSequence("kickdoorbaton")
