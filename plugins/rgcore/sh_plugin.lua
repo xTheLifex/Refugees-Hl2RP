@@ -27,10 +27,16 @@ ix.util.Include("sub/sh_gestures.lua")
 ix.util.Include("sub/sh_damage.lua")
 ix.util.Include("sub/sh_commands.lua")
 ix.util.Include("sub/sh_voicecommands.lua")
+ix.util.Include("sub/sh_skins.lua")
+
 
 if (SERVER) then
    function PLUGIN:ScalePlayerDamage(ply, hitgroup, dmginfo)
       self:DoDamageScaling(ply, hitgroup, dmginfo)
       self:DoDamageFlinch(ply, hitgroup, dmginfo)
+   end
+
+   function PLUGIN:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+      self:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
    end
 end

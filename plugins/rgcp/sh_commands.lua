@@ -11,6 +11,50 @@
  
 ]]
 
+-- Draw Pistol
+do
+	local COMMAND = {}
+	function COMMAND:OnRun(client, arguments)
+		if (!(client:Team() == FACTION_MPF)) then
+			return "You must be a Metropolice Unit to do this!"
+		end
+
+		local character = client:GetCharacter()
+		local inventory = character:GetInventory()
+		
+		local pistol = client:HasWeapon("weapon_pistol")
+		local ixpistol = client:HasWeapon("ix_pistol")
+		local usp = client:HasWeapon("arccw_uspmatch2")
+
+		if !(pistol or ixpistol or usp) then
+			return "You need a equipped pistol to do this!"
+		end
+
+		if (client:IsWepRaised()) then
+			return "You already have a weapon drawn"
+		end
+
+		client:EmitSound("weapons/357/357_reload3.wav")
+		if (pistol) then
+			client:SelectWeapon("weapon_pistol")
+		elseif (ixpistol) then
+			client:SelectWeapon("ix_pistol")
+		elseif (usp) then
+			client:SelectWeapon("arccw_uspmatch2")
+		end
+
+
+
+		client:ForceSequence("drawpistol", function()
+			client:SetWepRaised(true)
+		end)
+			
+		
+	end
+	
+	ix.command.Add("DrawPistol", COMMAND)
+end
+
 -- Door kick --
 do
 	local sounds = {
@@ -64,7 +108,7 @@ do
 
 			-- Door removal
 			timer.Simple(1.25, function() 
-				door:BlastDoor(aimVector * 750)
+				door:BlastDoor(aimVector * 550)
 				client:EmitSound(sounds[math.random(#sounds)])
 			end)
 

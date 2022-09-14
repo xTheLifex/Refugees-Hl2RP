@@ -135,6 +135,11 @@ if (SERVER) then
     end
 
     function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+        local rgcore = ix.plugin.Get("rgcore")
+        if (rgcore) then
+            rgcore:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+        end
+        
         local separator = ix.config.Get("separatorVC", nil) != "" and ix.config.Get("separatorVC", nil) or nil
 
         if chatType == "ic" or chatType == "w" or chatType == "y" or chatType == "dispatch" or (ix.config.Get("radioVCAllow", true) and chatType == "radio") then

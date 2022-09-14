@@ -55,7 +55,12 @@ if (CLIENT) then
     local colorBad = Color(175,21,21)
     local colorNotice = Color(202, 49, 207)
   
-
+    local name = "UNKNOWN"
+    if (tag and id) then
+      name = tag .. "-" .. id
+    elseif (id) then
+      name = id
+    end
     
     if (char:GetFaction() == FACTION_MPF) then cp = true end
     if (char:GetFaction() == FACTION_OTA) then ota = true end
@@ -69,7 +74,7 @@ if (CLIENT) then
       -- ON DUTY
       local a = {"10-8 standing by", "10-8", "is 10-8"}
       self:ClientSay(a[math.random(#a)])
-      self:VisorMessage("Unit " .. string.upper(tag) .. "-" .. id .. " is ON DUTY. 10-20: " .. area, colorNotice)
+      self:VisorMessage("Unit " .. name .. " is ON DUTY. 10-20: " .. area, colorNotice)
     end):SetIcon("icon16/user_gray.png")
 
     radioChild:AddOption("Off Duty", function() 
