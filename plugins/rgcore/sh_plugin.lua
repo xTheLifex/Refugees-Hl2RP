@@ -49,6 +49,17 @@ do
 	ix.command.Add("R", COMMAND)
 end
 
+do
+	local COMMAND = {}
+	COMMAND.arguments = ix.type.text
+
+	function COMMAND:OnRun(client, message)
+		client:ForceSequence(message)
+	end
+
+	ix.command.Add("Act", COMMAND)
+end
+
 if (SERVER) then
    function PLUGIN:ScalePlayerDamage(ply, hitgroup, dmginfo)
       self:DoDamageScaling(ply, hitgroup, dmginfo)
