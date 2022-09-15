@@ -29,6 +29,13 @@ ix.util.Include("sub/sh_commands.lua")
 ix.util.Include("sub/sh_voicecommands.lua")
 ix.util.Include("sub/sh_skins.lua")
 
+ix.option.Add("drawCrosshair", ix.type.bool, true, {
+   category = "appearance"
+})
+
+ix.lang.AddTable("english", {
+   optDrawCrosshair = "Draw crosshair"
+})
 
 if (SERVER) then
    function PLUGIN:ScalePlayerDamage(ply, hitgroup, dmginfo)
@@ -38,5 +45,12 @@ if (SERVER) then
 
    function PLUGIN:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
       self:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
+   end
+end
+
+if (CLIENT) then
+   function PLUGIN:ShouldDrawCrosshair(client, weapon)
+      local shouldDraw = ix.option.Get("drawCrosshair", true)
+      if (!shouldDraw) then return false end
    end
 end
