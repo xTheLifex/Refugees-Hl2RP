@@ -26,12 +26,63 @@ sound.Add({
         "npc/combine_soldier/vo/off3.wav"
     }
 })
+local ADJUST_SOUND = SoundDuration("npc/metropolice/pain1.wav") > 0 and "" or "../../hl2/sound/"
+local function EmitQueuedSoundsPitched(entity, sounds, delay, spacing, volume, pitch)
+    -- Let there be a delay before any sound is played.
+	delay = delay or 0
+	spacing = spacing or 0.1
+
+	-- Loop through all of the sounds.
+	for k, v in ipairs(sounds) do
+		local postSet, preSet = 0, 0
+
+		-- Determine if this sound has special time offsets.
+		if (istable(v)) then
+			postSet, preSet = v[2] or 0, v[3] or 0
+			v = v[1]
+		end
+
+        --TODO: Fix the bug properly?
+        --I dont think this changes much
+        postSet = 0
+        preSet = 0
+
+        local _pitch = 100
+        if (istable(pitch)) then
+            _pitch = pitch[k]
+        end
+
+        if (_pitch and isnumber(_pitch)) then
+            _pitch = math.Clamp(_pitch, 70, 180)
+        end
+
+		-- Get the length of the sound.
+		local length = SoundDuration(ADJUST_SOUND..v)-0.075
+		-- If the sound has a pause before it is played, add it here.
+		delay = delay + preSet
+
+		-- Have the sound play in the future.
+		timer.Simple(delay, function()
+			-- Check if the entity still exists and play the sound.
+			if (IsValid(entity)) then
+				entity:EmitSound(v, volume, _pitch)
+			end
+		end)
+        
+		-- Add the delay for the next sound.
+		delay = delay + length + postSet + spacing
+	end
+
+	-- Return how long it took for the whole thing.
+	return delay
+end
+
 
 if (CLIENT) then
     netstream.Hook("PlayQueuedSound", function(entity, sounds, delay, spacing, volume, pitch)
         entity = entity or LocalPlayer()
     
-        ix.util.EmitQueuedSounds(entity, sounds, delay, spacing, volume, pitch)
+        EmitQueuedSoundsPitched(entity, sounds, delay, spacing, volume, pitch)
     end)
 end
 
@@ -39,7 +90,7 @@ end
 if (SERVER) then
     local PLUGIN = PLUGIN
     PLUGIN.TempStored = PLUGIN.TempStored or {}
-    
+
     -- if no separator then just seperate at spaces
     local function GetVoiceCommands(text, class, separator)
         local strings = string.Explode(separator or " ", text)
@@ -48,8 +99,23 @@ if (SERVER) then
 
         for k, v in ipairs(strings) do
             if usedkeys[k] then continue end
-
+            local pitch = 100
             v = string.Trim(v)
+
+            local pChar = string.find(v, "#")
+            if (pChar) then
+                local sPitch = string.sub(v, pChar, pChar+3)
+                v = string.gsub(v, sPitch, "")
+                sPitch = string.sub(sPitch,2,-1)
+
+                local nPitch = tonumber(sPitch)
+                if (nPitch) then
+                    pitch = nPitch
+                else
+                    pitch = 100
+                end
+            end
+
 
             local info = Schema.voices.Get(class, v)
 
@@ -72,7 +138,9 @@ if (SERVER) then
                     end
                 end
             end
-            table.insert(finaltable, !info and {text = v} or table.Copy(info))
+
+            if (info) then info.pitch = pitch or 100 end
+            table.insert(finaltable, !info and {text = v, pitch = pitch or 100} or table.Copy(info))
         end
         return finaltable
     end
@@ -150,6 +218,7 @@ if (SERVER) then
                 local isGlobal = false
                 local completetext
                 local sounds = {}
+                local pitchdata = {}
                 if ix.config.Get("experimentalModeVC", false) == true then
                     texts = ExperimentalFormatting(texts)
                 end
@@ -159,6 +228,7 @@ if (SERVER) then
                             isGlobal = true
                         end
                         table.insert(sounds, v2.sound)
+                        table.insert(pitchdata, v2.pitch or 100)
                     end
 
                     local volume = isGlobal and 0 or 80
@@ -175,20 +245,24 @@ if (SERVER) then
 
                         if (speaker:Team() == FACTION_MPF) then
                             sounds = {"NPC_MetroPolice.Radio.On", unpack(sounds)}
+                            pitchdata = {100, unpack(pitchdata)}
                         elseif (speaker:Team() == FACTION_OTA) then
                             sounds = {"OverwatchRadio.On", unpack(sounds)}
+                            pitchdata = {100, unpack(pitchdata)}
                         end
 
                         if speaker:IsCombine() and !isGlobal then
                             speaker.bTypingBeep = nil
                             if (speaker:Team() == FACTION_MPF) then
                                 table.insert(sounds, "NPC_MetroPolice.Radio.Off")
+                                table.insert(pitchdata, 100)
                             elseif(speaker:Team() == FACTION_OTA) then
                                 table.insert(sounds, "OverwatchRadio.Off")
+                                table.insert(pitchdata, 100)
                             end
                         end
 
-                        local _ = !isGlobal and ix.util.EmitQueuedSounds(speaker, sounds, nil, nil, volume) or netstream.Start(nil, "PlayQueuedSound", nil, sounds, nil, nil, volume)
+                        local _ = !isGlobal and EmitQueuedSoundsPitched(speaker, sounds, nil, nil, volume, pitchdata) or netstream.Start(nil, "PlayQueuedSound", nil, sounds, nil, nil, volume, pitchdata)
 
                         if chatType == "radio" then
                             volume = ix.config.Get("radioVCVolume", 60)
@@ -197,7 +271,7 @@ if (SERVER) then
                             else
                                 for k3, v3 in pairs(receivers) do
                                     if v3 == speaker then continue end
-                                    ix.util.EmitQueuedSounds(v3, sounds, nil, nil, volume)
+                                    EmitQueuedSoundsPitched(v3, sounds, nil, nil, volume, pitchdata)
                                 end
                             end
                         end
