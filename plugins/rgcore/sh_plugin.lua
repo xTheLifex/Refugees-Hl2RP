@@ -67,7 +67,7 @@ if (SERVER) then
    end
 
    function PLUGIN:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
-      self:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
+      --self:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
    end
 end
 
