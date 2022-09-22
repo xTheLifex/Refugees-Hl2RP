@@ -57,7 +57,6 @@ ITEM.functions.Deploy = {
         return false
     end,
     OnCanRun = function(item)
-        -- only allow admins to run this item function
         local client = item.player
         return IsValid(client) and client:IsCombine()
     end
