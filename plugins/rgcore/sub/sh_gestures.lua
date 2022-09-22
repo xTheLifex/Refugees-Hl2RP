@@ -80,11 +80,17 @@ if (SERVER) then
          local big = false
 
          if (hitgroup == HITGROUP_HEAD) then headshot = true end
-
-         local attackerAim = attacker:GetAimVector().y
+         local attackerAim = Angle(0,0,0)
          local plyAim = ply:GetAimVector().y
+         local diff = 90
+         
+         if (attacker and attacker.GetAimVector) then
+            attackerAim = attacker:GetAimVector().y
+            diff = math.AngleDifference(attackerAim, plyAim)
+         end
+         
 
-         local diff = math.AngleDifference(attackerAim, plyAim)
+         
 
          if (ply:IsWepRaised()) then
             if ((math.random(10) == 1)) then
@@ -171,48 +177,6 @@ if (SERVER) then
       net.WriteBool(headshot)
       net.Broadcast()
    end
-
-
-   function PLUGIN:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
-      local enabled = ix.option.Get(speaker, "enableSpeakingGestures", true)
-      if (!enabled) then return end
-
-      local char = speaker:GetCharacter()
-
-      if (char:GetFaction() == FACTION_CITIZEN) then
-         local surprise = PLUGIN:TextHasKeywords({"what!", "what!?", "what?!", "what!?!", "what the fuck", "the fuck?"})
-         local anger = PLUGIN:TextHasKeywords({"fuck you", "fuck off", "fuck yourself", "die!", "just fucking die", "die already"})
-         print("surprise: " .. surprise)
-         print("anger: " .. anger)
-      end
-   end
-
-   function TextHasKeywords(text, keywords, mustHaveAll)
-      local mustHaveAll = mustHaveAll or false
-
-      for _,v in ipairs(keywords) do
-         if (string.find(string.lower(text), v)) then
-            -- We found one the keywords. 
-            -- This is all we need if we are looking for any.
-            if (!mustHaveAll) then
-               return true
-            end
-         else
-            -- We didnt find one of the keywords. Return false 
-            -- if we must have all.
-            if (mustHaveAll) then
-               return false
-            end
-         end
-
-         return true
-      end
-
-
-
-   end
-
-   
 end
 
 
