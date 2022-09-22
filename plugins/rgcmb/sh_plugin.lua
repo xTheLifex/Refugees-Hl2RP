@@ -11,11 +11,21 @@ if (SERVER) then
         local color = net.ReadColor()
         if (!msg or msg == "") then return end
         
-        local players = player.GetAll()
-        for _, p in ipairs(players) do
-            p:AddCombineDisplayMessage(msg, color)
+        local self = ix.plugin.Get("rgcmb")
+        if (self) then
+            self:VisorMessage(msg, color)
         end
     end)
+
+    function PLUGIN:VisorMessage(message, color)
+        local players = player.GetAll()
+        local sounds = {"buttons/combine_button3.wav", "buttons/combine_button2.wav", "buttons/combine_button1.wav"}
+        local snd = sounds[math.random(1,#sounds)]
+        for _, p in ipairs(players) do
+            p:AddCombineDisplayMessage(message, color)
+            p:EmitSound(snd, 50, 100, 0.5, CHAN_ITEM, 0, 1)
+        end
+    end
 end
 
 if (CLIENT) then
@@ -28,4 +38,6 @@ if (CLIENT) then
     end
 end
 
+ix.util.Include("sub/sh_voices.lua")
 ix.util.Include("sub/sh_assistant.lua")
+ix.util.Include("sub/sh_commands.lua")
