@@ -106,10 +106,18 @@ do
 
 			local physdoor, newdoor
 
-			-- Door removal
-			timer.Simple(1.25, function() 
-				door:BlastDoor(aimVector * 550)
-				client:EmitSound(sounds[math.random(#sounds)])
+			-- Door stuff
+			timer.Simple(1, function() 
+				if (SERVER) then
+					door:Fire("unlock")
+					client:Fire("addoutput", "targetname luaDoorKickPlayer")
+					local defaultSpeed = door:GetInternalVariable("m_flSpeed")
+					door:Fire("SetSpeed", "600")
+					door:Fire("OpenAwayFrom", "luaDoorKickPlayer")
+					client:Fire("addoutput", "targetname players")
+					timer.Simple(1, function() door:Fire("SetSpeed", defaultSpeed or 80) end)
+					client:EmitSound(sounds[math.random(#sounds)])
+				end
 			end)
 
 			client:ForceSequence("kickdoorbaton")
