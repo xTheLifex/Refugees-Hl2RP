@@ -107,7 +107,7 @@ Schema.voices.Add("CP", "SOCIOCIDE", "Sociocide.", "npc/metropolice/vo/sociocide
 Schema.voices.Add("CP", "SOCIOSTABLE", "We are socio-stable at this location.", "npc/metropolice/vo/wearesociostablethislocation.wav")
 Schema.voices.Add("CP", "SPEAR", "Spear.", "npc/combine_soldier/vo/spear.wav")
 Schema.voices.Add("CP", "STAB", "Stab.", "npc/combine_soldier/vo/stab.wav")
-Schema.voices.Add("CP", "STANDING BY", "Standing by.", "npc/combine_soldier/vo/standingby.wav")
+Schema.voices.Add("CP", "STANDING BY", "Standing by.", "npc/combine_soldier/vo/standingby].wav")
 Schema.voices.Add("CP", "STAR", "Star.", "npc/combine_soldier/vo/star.wav")
 Schema.voices.Add("CP", "STATIONBLOCK", "Stationblock.", "npc/metropolice/vo/stationblock.wav")
 Schema.voices.Add("CP", "STAY ALERT", "Stay alert.", "npc/combine_soldier/vo/stayalert.wav")
