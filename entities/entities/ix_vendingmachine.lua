@@ -102,6 +102,40 @@ if (SERVER) then
 		self:SetStock(id, self:GetStock(id) - 1)
 	end
 
+	function ENT:KeyValue(k, v)
+		if (k == "OnDispensed" or k == "OnDeny") then
+			self:StoreOutput(k,v)
+		end
+	end
+	
+	function ENT:AcceptInput(input, activator, caller, data)
+		local id = tonumber(data) or 1
+		if (input == "Dispense") then
+			self:InputDispense(id, false)
+		elseif (input == "ForceDispense") then
+			self:InputDispense(id, true)
+		elseif(input == "ResetStock") then
+			self:ResetStock(id)
+		elseif(input == "RemoveStock") then
+			self:RemoveStock(id)
+		end
+	end	
+
+	function ENT:InputDispense(id, force)
+		local itemInfo = self.Items[id]
+		
+		if (self:GetStock(id) > 0 or force) then
+			ix.item.Spawn(itemInfo[2], self:GetPos() + self:GetForward() * 19 + self:GetRight() * 4 + self:GetUp() * -26, function(item, entity) 
+				self:EmitSound("buttons/button4.wav", 60)
+
+				if (!force) then
+					self:RemoveStock(id)
+				end
+				self.nextUseTime = CurTime() + 1
+			end)
+		end
+	end
+
 	function ENT:Use(client)
 		local buttonID = self:GetClosestButton(client)
 
@@ -125,6 +159,7 @@ if (SERVER) then
 				self:EmitSound("buttons/button2.wav", 50)
 				self.nextUseTime = CurTime() + 1
 
+				self:TriggerOutput("OnDeny", client)
 				client:NotifyLocalized("vendingNeedMoney", ix.currency.Get(price))
 				return false
 			end
@@ -134,6 +169,7 @@ if (SERVER) then
 					self:EmitSound("buttons/button4.wav", 60)
 
 					character:TakeMoney(price)
+					self:TriggerOutput("OnDispensed", client)
 					client:NotifyLocalized("vendingPurchased", ix.currency.Get(price))
 
 					self:RemoveStock(buttonID)
