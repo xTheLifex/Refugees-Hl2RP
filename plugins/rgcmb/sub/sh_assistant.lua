@@ -230,29 +230,7 @@ if (CLIENT) then
     ----------- OVERWATCH 
     local radio = self:AddAssistantOption(menu, "Radio", "icon16/transmit_blue.png", {
       radio = true,
-      faction = FACTION_OTA,
-      options = {
-        ["Idle"] = function ()
-          Radio(Pick({
-            "OVERWATCH; TEAM HAS SECTOR",
-            "TEAM HOLDING",
-            formattedName .. ";IS HOLDING AT CODE;0",
-            formattedName .. ";IS AT CODE;0",
-            formattedName .. ";NO CONTACT;CODE;0",
-            "OVERWATCH;" .. formattedName .. ";NO CONTACT; STANDING BY",
-            "OVERWATCH;TEAM HAS SECTOR",
-            "OVERWATCH;NO CONTACT; SIGHTLINE CLEAR",
-            "NO CONTACT; SIGHTLINE CLEAR",
-            formattedName .. ";NO CONTACT",
-            formattedName .. ";SIGHTLINE CLEAR",
-            "OVERWATCH;IS AT CODE;0",
-            "OVERWATCH;SECURE NO VISCON",
-            formattedName .. ";NO VISCON",
-            formattedName .. ";NEGATIVE MOVEMENT; GRID; " .. formattedPos,
-            formattedName .. ";NEGATIVE MOVEMENT; SECTOR; " .. formattedPos
-          }))
-        end
-      }
+      faction = FACTION_OTA
     })
 
     local duty = self:AddAssistantOption(radio, "Duty", nil, {
@@ -287,7 +265,22 @@ if (CLIENT) then
         end,
         ["Everything clear!"] = function() 
           Radio(Pick({
-            formattedName .. "; HAS NEGATIVE MOVEMENT; GRID; " .. formattedPos
+            "OVERWATCH; TEAM HAS SECTOR",
+            "TEAM HOLDING",
+            formattedName .. ";IS HOLDING AT CODE;0",
+            formattedName .. ";IS AT CODE;0",
+            formattedName .. ";NO CONTACT;CODE;0",
+            "OVERWATCH;" .. formattedName .. ";NO CONTACT; STANDING BY",
+            "OVERWATCH;TEAM HAS SECTOR",
+            "OVERWATCH;NO CONTACT; SIGHTLINE CLEAR",
+            "NO CONTACT; SIGHTLINE CLEAR",
+            formattedName .. ";NO CONTACT",
+            formattedName .. ";SIGHTLINE CLEAR",
+            "OVERWATCH;IS AT CODE;0",
+            "OVERWATCH;SECURE NO VISCON",
+            formattedName .. ";NO VISCON",
+            formattedName .. ";NEGATIVE MOVEMENT; GRID; " .. formattedPos,
+            formattedName .. ";NEGATIVE MOVEMENT; SECTOR; " .. formattedPos
           }))
         end,
         ["My Position"] = function ()
@@ -309,10 +302,12 @@ if (CLIENT) then
             formattedName .. ";UNIT IS INBOUND",
             formattedName .. ";UNIT IS MOVING",
             formattedName .. ";CLOSING",
+            formattedName .. ";CLOSING2",
+            formattedName .. ";CLOSING2; COVER ME",
+            formattedName .. ";CLOSING; COVER ME",
             "OVERWATCH;" .. tag .. "; UNIT IS CLOSING",
             "OVERWATCH;" .. tag .. "; UNIT IS INBOUND",
-            "OVERWATCH;" .. tag .. "; UNIT IS MOVING",
-            "UNIT IS MOVING"
+            "OVERWATCH;" .. tag .. "; UNIT IS MOVING"
           }))
         end,
         ["I'm hit. I'm fine."] = function()
@@ -326,7 +321,6 @@ if (CLIENT) then
           }))
         end,
         ["I'm hit. I'm bad."] = function()
-          Visor(name .. " is in RED condition.", colorBad)
           Radio(Pick({
             "REQUEST MEDICAL",
             "REQUEST STIMDOSE",
@@ -340,7 +334,8 @@ if (CLIENT) then
           Radio(Pick({
             formattedName .. ";ENGAGING",
             formattedName .. ";FULL RESPONSE",
-            formattedName .. ";SUPPRESSING"
+            formattedName .. ";SUPPRESSING",
+            formattedName .. ";PROSECUTING"
           }))
         end,
         ["Target's Fucked"] = function ()
@@ -350,7 +345,7 @@ if (CLIENT) then
           }))
         end,
         ["I'm last man standing"] = function()
-          Visor(name .. " reports OVERWATCH team deserviced. " .. Pick({"All units Code 3", "All units SACRIFICE CODE.", "All units converge and respond.", "", "", ""}))
+          Visor(name .. " reports OVERWATCH team deserviced. " .. Pick({"All units Code 3", "All units SACRIFICE CODE.", "All units converge and respond.", "", "", ""}), colorBad)
           Radio(Pick({
             "TEAM IS DOWN",
             "SECTOR OVERRUN",
@@ -359,23 +354,20 @@ if (CLIENT) then
             "SECTOR;" .. formattedPos .. ";OUTBREAK; OUTBREAK#105; OUTBREAK#110",
             "REQUEST RESERVE",
             formattedName .. "; IS FINAL TEAM UNIT",
-            "SECTOR IS NOT SECURE"
+            formattedName .. ";IS HOLDING AT CODE;3;SECTOR IS NOT SECURE"
           }))
         end
       }
     })
 
 
-    local contactCommon = Pick({
-      "OVERWATCH; SECTOR NOT STERILE"
-    })
+    local contactCommon = "OVERWATCH; SECTOR NOT STERILE"
     local contacts = self:AddAssistantOption(reports, "Contact", nil, {
       radio = true,
       faction = FACTION_OTA,
       options = {
         ["Headcrab"] = function ()
           Radio(Pick({
-            contactCommon,
             contactCommon,
             "OVERWATCH; INFESTATION ZONE; GRID;" .. formattedPos,
             "OVERWATCH; INFESTATION ZONE; SECTOR;" .. formattedPos,
@@ -388,14 +380,12 @@ if (CLIENT) then
         ["Zombies"] = function()
           Radio(Pick({
             contactCommon,
-            contactCommon,
             "OVERWATCH; INFESTATION ZONE; GRID;" .. formattedPos,
             "OVERWATCH; INFESTATION ZONE; SECTOR;" .. formattedPos,
+            "CONTACT; NECROTICS;" .. formattedPos,
+            "CONTACT; NECROTICS;" .. formattedPos,
             "CONTACT; NECROTICS;" .. formattedPos
           }))
-        end,
-        ["Vorts"] = function()
-
         end,
         ["Antlions"] = function()
           Radio(Pick({
@@ -442,10 +432,10 @@ if (CLIENT) then
       faction = FACTION_OTA
     })
 
-    self:AddAssistantOption(speak, "Squad Orders", nil, {
-      faction = FACTION_OTA
+    local orders = self:AddAssistantOption(speak, "Squad Orders", nil, {
+      faction = FACTION_OTA,
+      options = {}
     })
-
 
 
 
