@@ -77,6 +77,29 @@ if (SERVER) then
 		self.nextUseTime = CurTime()
 	end
 
+	function ENT:KeyValue(k, v)
+		if (k == "OnDenyRation") then
+			self:StoreOutput(k,v)
+		elseif (k == "OnRationDispensed") then
+			self:StoreOutput(k,v)
+		elseif(k == "OnRequestRation") then
+			self:StoreOutput(k,v)
+		end
+	end
+	
+	function ENT:AcceptInput(input, activator, caller, data)
+		if (input ==  "DispenseRation") then
+			local delay = tonumber(data) or 1.2
+			self:SetDisplay(3)
+			self:SpawnRation(function()
+				self:TriggerOutput("OnRationDispensed", self)
+				self.dispenser:Fire("SetAnimation", "dispense_package")
+				self:EmitSound("ambient/machines/combine_terminal_idle4.wav")
+			end, delay)
+			return true
+		end
+	end
+
 	function ENT:SpawnRation(callback, releaseDelay)
 		releaseDelay = releaseDelay or 1.2
 
@@ -110,6 +133,7 @@ if (SERVER) then
 	function ENT:StartDispense()
 		self:SetDisplay(3)
 		self:SpawnRation(function()
+			self:TriggerOutput("OnRationDispensed", self)
 			self.dispenser:Fire("SetAnimation", "dispense_package")
 			self:EmitSound("ambient/machines/combine_terminal_idle4.wav")
 		end)
@@ -136,6 +160,7 @@ if (SERVER) then
 
 		if (client:Team() == FACTION_CITIZEN) then
 			if (!self:GetEnabled()) then
+				self:TriggerOutput("OnDenyRation", client)
 				self:DisplayError(6)
 				return
 			end
@@ -143,6 +168,7 @@ if (SERVER) then
 			local cid = client:GetCharacter():GetInventory():HasItem("cid")
 
 			if (!cid) then
+				self:TriggerOutput("OnDenyRation", client)
 				self:DisplayError(7)
 				return
 			end
@@ -152,12 +178,13 @@ if (SERVER) then
 			self:SetDisplay(2)
 			self:EmitSound("ambient/machines/combine_terminal_idle2.wav")
 
+			
 			-- check cid ration time and dispense if allowed
 			timer.Simple(math.random(1.8, 2.2), function()
 				if (cid:GetData("nextRationTime", 0) < os.time()) then
 					self:SetDisplay(8)
 					self:EmitSound("ambient/machines/combine_terminal_idle3.wav")
-
+					self:TriggerOutput("OnRequestRation", client)
 					timer.Simple(10.2, function()
 						self:StartDispense()
 						cid:SetData("nextRationTime", os.time() + ix.config.Get("rationInterval", 1))
