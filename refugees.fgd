@@ -1,0 +1,85 @@
+@SolidClass = ix_area : "Marks a IX:HL2RP Area."
+[
+	areaname(string) 	: "Area Name" : "Area" : "The name of this area"
+	areacolor(color255)	: "Area Color" : "255 255 255" : "The color of this area"
+	areatype(choices) : "Area Type" : 0 : "The type of area. We don't use any custom area types, but i'm leaving this here for future support should we decide to actually use any custom area types in the future." = 
+	[
+		0 : "Default (Area)"
+	]
+	display(choices) : "Display?" : 1 : "Should this area be displayed when walking inside its volume?" =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+	forcearea(choices) : "Force Spawning?" : 0 : "Should this area ALWAYS spawn (overwriting any existing area with this name that come from previous map versions OR setup by the server admin themselves.)" =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+]
+
+@PointClass iconsprite("editor/logic_auto.vmt") = ix_auto
+[
+	output OnPluginsLoaded(void) : "Fires when plugins have finished loading. Usually when it's safe to send information to entities."
+]
+
+@PointClass base(Targetname) studio("models/props_combine/combine_fence01b.mdl") = ix_forcefield : "A combine forcefield."
+[
+	mode(choices)	: "Mode" : 1 : "Defines the initial mode of this forcefield." =
+	[
+		1: "Disabled"
+		2: "Allow only valid CID"
+		3: "Allow only combine"
+	]
+	input SetMode(float) : "Sets the forcefield's mode."
+	input AddToWhitelist(target_destination) : "Adds an entity to this forcefield's whitelist. Can be a targetname or classname."
+	input RemoveFromWhitelist(target_destination) : "Removes an entity from this forcefield's whitelist. Can be a targetname or classname."
+	output OnDenyUse(void) : "When a player presses E but is not a combine unit. So it fails to change the forcefield mode"
+]
+
+@PointClass base(Targetname) studio("models/props_combine/combine_lock01.mdl") = ix_combinelock : "A combine lock"
+[
+	door(target_destination) : "Door Name" : "" : "The name of the door which this lock is connected to. This MUST be a prop_door_rotating (for now!)"
+	type(choices) : "Lock Type" : 0 : "The type of this lock. This feature is not yet implemented (at the time of writing this) but has been added to the FGD in advance." =
+	[
+		0: "Combine Lock"
+		1: "Civil Worker's Union"
+		2: "Civil Medical Union"
+		3: "Universal"
+	]
+	input Lock(void) : "Sets the combine lock into a locked state"
+	input Unlock(void) : "Sets the combine lock into a unlocked state"
+	input Toggle(void) : "Toggles the locked state of the combine lock"
+]
+
+@PointClass base(Targetname) studio("models/props_combine/combine_lock01.mdl") = ix_unionlock : "A union lock"
+[
+	door(target_destination) : "Door Name" : "" : "The name of the door which this lock is connected to. This MUST be a prop_door_rotating (for now!)"
+	type(choices) : "Lock Type" : 0 : "The type of this lock. This feature is not yet implemented (at the time of writing this) but has been added to the FGD in advance." =
+	[
+		0: "Universal"
+		1: "Civil Worker's Union"
+		2: "Civil Medical Union"
+	]
+	input Lock(void) : "Sets the combine lock into a locked state"
+	input Unlock(void) : "Sets the combine lock into a unlocked state"
+	input Toggle(void) : "Toggles the locked state of the combine lock"
+]
+
+@PointClass base(Targetname) studio("models/props_combine/combine_dispenser.mdl") = ix_rationdispenser : "A ration dispenser"
+[
+	input DispenseRation(float) : "Forces this dispenser to dispense a ration taking the specified amount of time to produce."
+	output OnRequestRation(void) : "Fires after a player has requested a ration and it has begun production."
+	output OnRationDispensed(void) : "Fires after this ration dispenser has dispensed a ration"
+	output OnDenyRation(void) : "Fires after a player has tried to get another ration but was denied due to the timer."
+]
+
+@PointClass base(Targetname) studio("models/props_interiors/vendingmachinesoda01a.mdl") = ix_vendingmachine : "A vending machine"
+[
+	input Dispense(integer) : "Tells this vending machine to dispense a can of the specified stock if possible."
+	input ForceDispense(integer) : "Forces this vending machine to dispense a can from specified stock ignoring stock amount."
+	input ResetStock(integer) : "Restocks the vending machine's specified stock to full capacity."
+	input RemoveStock(integer) : "Removes a can from the specified stock"
+	output OnDeny(void) : "Fires after a player has tried to purchase from this vending machine but failed."
+	output OnDispensed(void) : "Fires after this vending machine has dispensed a can"
+]
