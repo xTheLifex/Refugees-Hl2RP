@@ -10,6 +10,25 @@ ENT.RenderGroup = RENDERGROUP_BOTH
 ENT.PhysgunDisabled = true
 ENT.bNoPersist = true
 
+ENT.whitelist = {}
+ENT.whitelist["npc_combine_s"]  			=	true
+ENT.whitelist["npc_metropolice"]  			=	true
+ENT.whitelist["npc_rollermine"]  			=	true
+ENT.whitelist["npc_stalker"]  				=	true
+ENT.whitelist["npc_strider"]  				=	true
+ENT.whitelist["npc_cscanner"]  				=	true
+ENT.whitelist["npc_turret_floor"]  			=	true
+ENT.whitelist["npc_clawscanner"]  			=	true
+ENT.whitelist["npc_helicopter"]  			=	true
+ENT.whitelist["npc_turret_ceiling"]  		=	true
+ENT.whitelist["npc_combine_camera"]  		=	true
+ENT.whitelist["npc_combinedropship"]  		=	true
+ENT.whitelist["npc_hunter"]  				=	true
+ENT.whitelist["npc_combinegunship"]  		=	true
+ENT.whitelist["npc_rp_combine_s"]  			=	true
+ENT.whitelist["npc_rp_metropolice"]  		=	true
+
+
 function ENT:SetupDataTables()
 	self:NetworkVar("Int", 0, "Mode")
 	self:NetworkVar("Entity", 0, "Dummy")
@@ -34,6 +53,54 @@ if (SERVER) then
 
 		Schema:SaveForceFields()
 		return entity
+	end
+
+	hook.Add("ShouldCollide", "ix_forcefields2", function(a, b) 
+		local forcefield
+		local ent
+
+		if (IsValid(a) and a:GetClass() == "ix_forcefield") then
+			forcefield = a
+			ent = b
+		elseif (IsValid(b) and b:GetClass() == "ix_forcefield") then
+			forcefield = b
+			ent = a
+		end
+
+		if (forcefield:GetMode() == 1) then
+			return false
+		end
+
+		local whitelist = forcefield.whitelist
+		if (whitelist) then
+			if ((whitelist[ent:GetName()] == true) or (whitelist[ent:GetClass()] == true)) then
+				return false
+			end
+		end
+
+	end)
+
+	function ENT:KeyValue(k, value)
+		if (k == "OnDenyUse") then
+			self:StoreOutput(k,v)
+		end
+	end
+
+	function ENT:AcceptInput(input, ent, caller, data)
+		local input = string.lower(input)
+		if (input == "setmode") then
+			local n = tonumber(data)
+			if (n) then
+				self:SetMode(n)
+			end
+			return true
+		elseif (input == "addtowhitelist") then
+			self.whitelist[data] = true
+			return true
+		elseif (input == "removefromwhitelist") then
+			self.whitelist[data] = nil
+			return true
+		end
 	end
 
 	function ENT:Initialize()
