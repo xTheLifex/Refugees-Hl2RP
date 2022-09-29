@@ -19,6 +19,41 @@ function ENT:SetupDataTables()
 end
 
 if (SERVER) then
+    hook.Add("InitializedPlugins", "ixLockHammerInit", function() 
+        timer.Simple(5, function()  -- Wait a bit for everything to be properly loaded.
+            for _, v in ipairs(ents.FindByClass("ix_combinelock")) do
+                v:HammerSetup()
+            end
+        end)
+    end)
+
+	function ENT:HammerSetup()
+		local kvp = self:GetKeyValues()
+
+		for k,v in pairs(kvp) do
+			if (k == "door") then
+				local doors = ents.FindByName(v)
+				if (doors and doors[1]) then
+					local door = doors[1]
+					self:SetDoor(door, self:GetPos(), self:GetAngles())
+				end
+			end
+		end
+	end	
+
+	function ENT:AcceptInput(input, activator, caller, data)
+		if (input ==  "Lock") then
+			self:SetLocked(true)
+			return true
+		elseif (input == "Unlock") then
+			self:SetLocked(false)
+			return true
+		elseif (input == "Toggle") then
+			self:SetLocked(!self:GetLocked())
+			return true
+		end
+	end
+
 	function ENT:GetLockPosition(door, normal)
 		local index = door:LookupBone("handle")
 		local position = door:GetPos()
