@@ -27,24 +27,79 @@ ix.command.Add("shove", {
 
         local ent = ply:GetEyeTraceNoCursor().Entity
         local target
+        local npc
+        local prop
 
         if ( ent:IsPlayer() ) then 
             target = ent
         else
-            return false, "You must be looking at someone!"     
+            if (ent:IsNPC()) then
+                npc = ent
+            elseif(ent:GetClass() == "prop_physics") then
+                prop = ent
+            else
+                return false, "You must be looking at someone!"   
+            end
         end
 
         if ( target ) and ( target:GetPos():Distance(ply:GetPos()) >= 50 ) then
             return false, "You need to be close to your target!"
         end 
 
+
         ply:ForceSequence("melee_gunhit")
-        timer.Simple(0.3, function()
-            target:SetVelocity(ply:GetAimVector() * 300)
-        end)
-        timer.Simple(0.4, function()
-            ply:EmitSound("physics/body/body_medium_impact_hard6.wav")
-            target:SetRagdolled(true, ix.config.Get("shoveTime", 20))
-        end)
+        if ( target ) then
+            timer.Simple(0.3, function()
+                target:SetVelocity(ply:GetAimVector() * 300)
+            end)
+            timer.Simple(0.4, function()
+                ply:EmitSound("physics/body/body_medium_impact_hard6.wav")
+                
+                if (target:Health() < 40) then
+                    target:SetRagdolled(true, ix.config.Get("shoveTime", 20))
+                else
+                    local damageInfo = DamageInfo()
+                    damageInfo:SetAttacker(ply)
+                    damageInfo:SetInflictor(ply)
+                    damageInfo:SetDamage(20)
+                    damageInfo:SetDamageType(DMG_GENERIC)
+                    damageInfo:SetDamagePosition(target:GetPos())
+                    damageInfo:SetDamageForce(ply:GetAimVector() * 1024)
+                    target:TakeDamageInfo(damageInfo)
+                end
+            end)
+        end
+        if ( npc ) then
+            timer.Simple(0.3, function()
+                npc:SetVelocity(ply:GetAimVector() * 300)
+            end)
+            timer.Simple(0.4, function()
+                ply:EmitSound("physics/body/body_medium_impact_hard6.wav")
+                local damageInfo = DamageInfo()
+                damageInfo:SetAttacker(ply)
+                damageInfo:SetInflictor(ply)
+                damageInfo:SetDamage(30)
+                damageInfo:SetDamageType(DMG_GENERIC)
+                damageInfo:SetDamagePosition(npc:GetPos())
+                damageInfo:SetDamageForce(ply:GetAimVector() * 1024)
+                npc:TakeDamageInfo(damageInfo)
+            end)
+        end
+        if ( prop ) then
+            timer.Simple(0.3, function()
+                prop:SetVelocity(ply:GetAimVector() * 300)
+            end)
+            timer.Simple(0.4, function()
+                ply:EmitSound("physics/body/body_medium_impact_hard6.wav")
+                local damageInfo = DamageInfo()
+                damageInfo:SetAttacker(ply)
+                damageInfo:SetInflictor(ply)
+                damageInfo:SetDamage(30)
+                damageInfo:SetDamageType(DMG_GENERIC)
+                damageInfo:SetDamagePosition(prop:GetPos())
+                damageInfo:SetDamageForce(ply:GetAimVector() * 1024)
+                prop:TakeDamageInfo(damageInfo)
+            end)
+        end
     end,
 })
