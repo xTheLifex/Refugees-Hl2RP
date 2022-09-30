@@ -28,10 +28,15 @@ if (SERVER) then
         end)
     end)
     
+    hook.Add("SetupAreaProperties", "ixAreaAddProperties", function()
+        ix.area.AddProperty("restricted", ix.type.bool, false)
+    end)
 
     function ENT:KeyValue(key, value)
         if (key  == "areaname") then
             self.areaname = value
+        elseif(key == "restricted") then
+            self.restricted = tobool(value)
         elseif(key == "areacolor") then
             local values = string.Explode(" ", value)
             local red = tonumber(values[1])
@@ -79,6 +84,7 @@ if (SERVER) then
         local properties = {}
         properties["color"] = self.areacolor
         properties["display"] = self.display
+        properties["restricted"] = self.restricted
 
         local sp, ep = self:GetModelBounds()
         local min, max = SortVector(sp, ep)

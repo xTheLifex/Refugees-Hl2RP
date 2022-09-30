@@ -21,6 +21,10 @@ PLUGIN.description = "The Refugees Core module, contains features shared with al
 PLUGIN.author = "TheLife"
 PLUGIN.maxLength = 512
 
+function PLUGIN:Log(text)
+   print("[RG-CORE] " .. tostring(text))
+end
+
 -- Submodules
 ix.util.Include("sub/sh_footsteps.lua")
 ix.util.Include("sub/sh_gestures.lua")
@@ -28,6 +32,7 @@ ix.util.Include("sub/sh_damage.lua")
 ix.util.Include("sub/sh_commands.lua")
 ix.util.Include("sub/sh_voicecommands.lua")
 ix.util.Include("sub/sh_skins.lua")
+ix.util.Include("sub/sh_relationships.lua")
 
 ix.option.Add("drawCrosshair", ix.type.bool, true, {
    category = "appearance"
