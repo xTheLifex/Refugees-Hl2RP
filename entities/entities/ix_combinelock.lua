@@ -27,19 +27,36 @@ if (SERVER) then
         end)
     end)
 
-	function ENT:HammerSetup()
-		local kvp = self:GetKeyValues()
+	hook.Add("PostCleanupMap", "ixLockCleanup", function() 
+		for _, v in ipairs(ents.FindByClass("ix_combinelock")) do
+			v:HammerSetup()
+		end
+    end)
 
-		for k,v in pairs(kvp) do
-			if (k == "door") then
-				local doors = ents.FindByName(v)
-				if (doors and doors[1]) then
-					local door = doors[1]
+	function ENT:HammerSetup()
+		if (!self.hammer) then return end
+
+		if (self.hammer.door) then
+			for _, door in ipairs(ents.FindByName(self.hammer.door)) do
+				if (door) then
 					self:SetDoor(door, self:GetPos(), self:GetAngles())
+					break
 				end
 			end
 		end
 	end	
+
+	function ENT:KeyValue(k,v)
+		self.hammer = self.hammer or {}
+		if (k == "door") then
+			print(v)
+			self.hammer.door = v
+		end
+		if (k == "type") then
+			self.hammer.type = tointeger(v) or 0
+		end
+	end
+
 
 	function ENT:AcceptInput(input, activator, caller, data)
 		if (input ==  "Lock") then
