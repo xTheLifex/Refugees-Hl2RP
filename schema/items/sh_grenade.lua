@@ -103,8 +103,12 @@ ITEM.functions.Throw = {
             nade:Fire("SetTimer", "5")
         end)
 
+        local rgcore = ix.plugin.Get("rgcore")
+        rgcore:FlagAsResistance(ply, -1) -- until death
+
+
         local class = ix.anim.GetModelClass(char:GetModel())
-        if (class == "metropolice") then
+        if (class == "metrocop") then
             -- CIVIL PROTECTION
             ply:ForceSequence("grenadethrow")
         elseif (class == "overwatch") then
