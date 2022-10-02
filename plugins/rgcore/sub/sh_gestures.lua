@@ -145,7 +145,7 @@ if (SERVER) then
                local sequences = gTableCP[hitgroup] or gTableCP[32]
                local sequence = sequences[math.random(#sequences)]
                if (sequence) then
-                  gesture = ply:GetSequenceActivity(ply:LookupSequence(sequence))
+                  gesture = ply:LookupSequence(sequence)
                   self:DoPlayerGesture(ply, gesture, GESTURE_SLOT_FLINCH, headshot)
                end
             elseif (class == "overwatch") then
@@ -153,7 +153,7 @@ if (SERVER) then
                local sequences = gTableOTA[hitgroup] or gTableOTA[32]
                local sequence = sequences[math.random(#sequences)]
                if (sequence) then
-                  gesture = ply:GetSequenceActivity(ply:LookupSequence(sequence))
+                  gesture = ply:LookupSequence(sequence)
                   self:DoPlayerGesture(ply, gesture, GESTURE_SLOT_FLINCH, headshot)
                end
             else
@@ -194,6 +194,6 @@ if (CLIENT) then
          ply:EmitSound("player/bhit_helmet-1.wav")
       end
 
-      ply:AnimRestartGesture( slot, gesture, true )
+      ply:AddVCDSequenceToGestureSlot( slot, gesture, 0, 1 )
    end )
 end
