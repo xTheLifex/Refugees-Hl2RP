@@ -80,9 +80,53 @@ if (SERVER) then
 
 	end)
 
+    hook.Add("InitializedPlugins", "ixForcefieldSetup", function() 
+        timer.Simple(5, function()  -- Wait a bit for everything to be properly loaded.
+            for _, v in ipairs(ents.FindByClass("ix_forcefield")) do
+                v:HammerSetup()
+            end
+        end)
+    end)
+
+    hook.Add("PostCleanupMap", "ixAutoCleanup", function() 
+		for _, v in ipairs(ents.FindByClass("ix_forcefield")) do
+			v:HammerSetup()
+		end
+    end)
+
+	function ENT:HammerSetup()
+		if (self.hammer) then
+			if (self.hammer.mode) then
+				self:SetMode(self.hammer.mode)
+			end
+			if (self.hammer.parents) then
+				self.syncparents = ents.FindByName(self.hammer.parents)
+			end
+		end
+	end
+
 	function ENT:KeyValue(k, value)
+		self.hammer = self.hammer or {}
+		// Output: OnDenyUse - fires when user fails to use forcefield.
 		if (k == "OnDenyUse") then
-			self:StoreOutput(k,v)
+			self:StoreOutput(k,value)
+		end
+		// The default forcefield mode for this forcefield
+		// 1 - Disabled
+		// 2 - Only with valid CID
+		// 3 - Only Combine
+		if (k == "mode") then
+			self.hammer.mode = tonumber(value) or 1
+		end
+		// If this forcefield has input enabled or not
+		// 0 - Ignore player input
+		// 1 - Accept player input
+		if (k == "enabled") then
+			self.enabled = tobool(value)
+		end
+		// Other forcefields to sync with.
+		if (k == "parents") then
+			self.hammer.parents = value
 		end
 	end
 
@@ -94,13 +138,22 @@ if (SERVER) then
 				self:SetMode(n)
 			end
 			return true
-		elseif (input == "addtowhitelist") then
+		end
+		if (input == "addtowhitelist") then
 			self.whitelist[data] = true
 			return true
-		elseif (input == "removefromwhitelist") then
+		end
+		if (input == "removefromwhitelist") then
 			self.whitelist[data] = nil
 			return true
 		end
+		if (input == "enableuse" or input == "enable") then
+			self.enabled = true
+		end
+		if (input == "disableuse" or input == "disable") then
+			self.enabled = false
+		end
+
 	end
 
 	function ENT:Initialize()
@@ -221,9 +274,30 @@ if (SERVER) then
 	}
 
 	function ENT:Use(activator)
+		if (!self.enabled) then return end
+
+		local sync = false
+		if (self.hammer) then
+			if (self.hammer.opmode) then
+				if (self.hammer.opmode == 1) then return end
+				if (self.hammer.opmode == 2) then sync = true end
+			end
+		end
+
+		local powered = true
+		if (self.generator) then
+			for _, g in ipairs(self.generator) do
+				
+			end
+		end
+
 		if ((self.nextUse or 0) < CurTime()) then
 			self.nextUse = CurTime() + 1.5
 		else
+			return
+		end
+
+		if (!powered) then
 			return
 		end
 
@@ -239,6 +313,10 @@ if (SERVER) then
 			else
 				self:SetSkin(0)
 				self.dummy:SetSkin(0)
+			end
+
+			if (sync and self.syncparents) then
+				
 			end
 
 			self:EmitSound("buttons/combine_button5.wav", 140, 100 + (self:GetMode() - 1) * 15)
