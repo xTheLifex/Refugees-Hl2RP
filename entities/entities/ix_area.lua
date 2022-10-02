@@ -21,7 +21,7 @@ if (SERVER) then
     local ix = ix or nil
 
     hook.Add("InitializedPlugins", "ixAreaEntInit", function() 
-        timer.Simple(10, function()  -- Wait a bit for everything to be properly loaded.
+        timer.Simple(5, function()  -- Wait a bit for everything to be properly loaded.
             for _, v in ipairs(ents.FindByClass("ix_area")) do
                 v:Setup()
             end
