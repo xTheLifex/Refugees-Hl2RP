@@ -49,7 +49,6 @@ if (SERVER) then
 	function ENT:KeyValue(k,v)
 		self.hammer = self.hammer or {}
 		if (k == "door") then
-			print(v)
 			self.hammer.door = v
 		end
 		if (k == "type") then
