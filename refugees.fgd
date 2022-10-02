@@ -1,3 +1,114 @@
+//-------------------------------------------------------------------------
+//
+// Base Classes
+//
+//-------------------------------------------------------------------------
+
+@BaseClass base(Targetname) = BaseHelixFilter
+[
+	Negated(choices) : "Filter mode" : "Allow entities that match criteria" : "If set to Allow, only entities who match the criteria will pass the filter. "+
+		"If set to Disallow, only entities who do NOT match the criteria will pass the filter." =
+	[
+		0 : "Allow entities that match criteria"
+		1 : "Disallow entities that match criteria"
+	]
+
+	// Inputs
+	input TestActivator(void) : "Test the activator against the filter and fires OnPass or OnFail output."
+
+	// Outputs
+	output OnPass(void) : "Fired in response to TestActivator input if the activator passes the filter."
+	output OnFail(void) : "Fired in response to TestActivator input if the activator fails to pass the filter."
+]
+
+//-------------------------------------------------------------------------
+//
+// Filters
+//
+//-------------------------------------------------------------------------
+
+@FilterClass base(BaseFilter) iconsprite("editor/filter_multiple.vmt") = ix_filter_multi :
+	"A filter that tests the activator against multiple filters. This allows you to build more complex filters."
+[
+	filtertype(choices) : "Logic Type" : 0 =
+	[
+		0 : "AND (all filters must pass)"
+		1 : "OR (any filter must pass)"
+	]
+
+	Negated(choices) : "Negate Outcome" : 0 : "Whether to negate the result of the subfilters, after combining them using the Logic Type chosen.\n"+
+		"Negating the outcome using the AND logic type means that any subfilter must fail for this filter to pass.\n"+
+		"Negating the outcome using the OR logic type means that all subfilters must fail for this filter to pass." =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+
+	Filter01(filterclass) : "Filter 1" : : "Activator filter to test."
+	Filter02(filterclass) : "Filter 2" : : "Activator filter to test."
+	Filter03(filterclass) : "Filter 3" : : "Activator filter to test."
+	Filter04(filterclass) : "Filter 4" : : "Activator filter to test."
+	Filter05(filterclass) : "Filter 5" : : "Activator filter to test."
+]
+
+@FilterClass base(BaseHelixFilter) iconsprite("editor/filter_class.vmt") = ix_filter_inventory :
+	"A filter that filters by the inventory contents of the activator."
+[
+	item(string) : "Item" : "" : "Item to check."
+	equipped(choices) : "Equipped?" : 0 : "Should we check for the item being equipped? (If it's a weapon)" =
+	[
+		0: "Don't care"
+		1: "Equipped"
+		2: "Not equipped"
+	]
+	amount(choices) : "Amount?" : 0 : "" =
+	[
+		0: "Don't care"
+		1: "1"
+		2: "2"
+		3: "3"
+		4: "4"
+		5: "5"
+		6: "6+"
+	]
+	freq(string) : "Frequency" : "100.0" : "Should we check for this radio's frequency? (Assuming the item is a handheld radio)"
+]
+
+
+@FilterClass base(BaseHelixFilter) iconsprite("editor/filter_class.vmt") = ix_filter_faction :
+	"A filter that filters by the faction of the activator."
+[
+	faction(choices) : "Faction" : 0 : "" =
+	[
+		0: "Citizen"
+		1: "Civil Workers Union"
+		2: "Civil Medical Union"
+		3: "Civil Protection"
+		4: "City Administrator"
+		5: "Overwatch"
+		6: "Vortigaunts"
+		7: "Antlions / Xen"
+		8: "Zombies"
+		9: "Bird"
+	]
+	includenpcs(choices) : "Include NPCs?" : 0 : "Default NPC types can be checked against their faction equivallent. This will not work for custom NPCs!" = 
+	[
+		0: "No"
+		1: "Yes"
+	]
+	groupcitizens(choices) : "Group Citizen Factions?" : 0 : "Group Citizens, CWU and CMU together, making all three pass this filter the same way." =
+	[
+		0: "No"
+		1: "Yes"
+	]
+]
+
+//-------------------------------------------------------------------------
+//
+// Solid / Brush entities
+//
+//-------------------------------------------------------------------------
+
 @SolidClass = ix_area : "Marks a IX:HL2RP Area."
 [
 	areaname(string) 	: "Area Name" : "Area" : "The name of this area"
@@ -16,6 +127,67 @@
 		0 : "No"
 		1 : "Yes"
 	]
+	restricted(choices) : "Restricted Area?" : 0 : "Is this area restricted? (Citizens should not be here. Combine NPCs will shoot citizens on sight in this area.)" =
+	[
+		0: "No"
+		1: "Yes"
+	]
+]
+
+
+//-------------------------------------------------------------------------
+//
+// Point Entities
+//
+//-------------------------------------------------------------------------
+
+@PointClass iconsprite("editor/env_microphone.vmt") = ix_chat_listener : "Filters by chat message listened by this entity."
+[
+	sentence(string) : "Sentence" : "" : "The text sentence to listen for"
+
+	chat(choices) : "Chat" : 0 : "" =
+	[
+		0: "Any"
+		1: "IC"
+		2: "YELL"
+		3: "WHISPER"
+		4: "OOC"
+		5: "LOOC"
+		6: "EVENT"
+		7: "LOCALEVENT"
+		8: "DISPATCH"
+		9: "Any character speech"
+		10: "Any event"
+		11: "Any OOC"
+	]
+
+	format(choices) : "Format type" : 2 : "If this entity should listen for using raw text, formatted text or both." =
+	[
+		0: "Raw"
+		1: "Formatted"
+		2: "Both"
+	]
+
+	matching(choices) : "Matching" : 1 : "" =
+	[
+		0: "The entire sentence"
+		1: "Any words in the sentence"
+	]
+
+	faction(choices) : "Faction" : 10 : "" =
+	[
+		0: "Citizen"
+		1: "Civil Workers Union"
+		2: "Civil Medical Union"
+		3: "Civil Protection"
+		4: "City Administrator"
+		5: "Overwatch"
+		6: "Vortigaunts"
+		7: "Antlions / Xen"
+		8: "Zombies"
+		9: "Bird"
+		10: "Don't Care"
+	]
 ]
 
 @PointClass iconsprite("editor/logic_auto.vmt") = ix_auto
@@ -25,15 +197,25 @@
 
 @PointClass base(Targetname) studio("models/props_combine/combine_fence01b.mdl") = ix_forcefield : "A combine forcefield."
 [
-	mode(choices)	: "Mode" : 1 : "Defines the initial mode of this forcefield." =
+	mode(choices)	: "Forcefield Mode" : 1 : "Defines the initial mode of this forcefield." =
 	[
 		1: "Disabled"
 		2: "Allow only valid CID"
 		3: "Allow only combine"
 	]
+	enabled(choices) : "Accept player inputs" : 1 : "Should this forcefield accept player +use inputs?" =
+	[
+		0: "No"
+		1: "Yes"
+	]
+	parents(target_destination) : "Sync Target(s)" : "" : "The name of the other forcefield(s) to sync with (If using the Sync operation mode)"
 	input SetMode(float) : "Sets the forcefield's mode."
 	input AddToWhitelist(target_destination) : "Adds an entity to this forcefield's whitelist. Can be a targetname or classname."
 	input RemoveFromWhitelist(target_destination) : "Removes an entity from this forcefield's whitelist. Can be a targetname or classname."
+	input EnableUse(void) : "Enable player use for this forcefield"
+	input Enable(void) : "Enable player use for this forcefield"
+	input DisableUse(void) : "Disable player use for this forcefield"
+	input Disable(void) : "Disable player use for this forcefield"
 	output OnDenyUse(void) : "When a player presses E but is not a combine unit. So it fails to change the forcefield mode"
 ]
 
