@@ -134,6 +134,7 @@ if (SERVER) then
         local faction = char:GetFaction()
 
         if (combines[faction]) then
+            self.relResistanceTimeouts[ply] = 0
             return SIDE_COMBINE 
         end
 
@@ -145,7 +146,7 @@ if (SERVER) then
             local inv = char:GetInventory()
             if (inv) then
                 if (inv:HasItemOfBase('base_weapons', {["equip"] = true})) then
-                    self:FlagAsResistance(ply, -1)
+                    self:FlagAsResistance(ply, 60)
                     return SIDE_RESISTANCE
                 end
             end
