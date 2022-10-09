@@ -7,6 +7,8 @@ jobs:
     steps:
     - name: 🚚 Get latest code
       uses: actions/checkout@v2
+      lfs: true
+      fetch-depth: 0
     
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
