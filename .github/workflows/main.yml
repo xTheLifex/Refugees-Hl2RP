@@ -11,6 +11,8 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@4.3.2
       with:
-        server: 172.96.164.70:8821
+        server: 172.96.164.70
         username: TheLife
         password: ${{ secrets.ftp_password }}
+        protocol: ftps
+        port: 8821
