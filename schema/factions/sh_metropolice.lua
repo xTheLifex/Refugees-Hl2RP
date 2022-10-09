@@ -3,7 +3,8 @@ FACTION.name = "Metropolice Force"
 FACTION.description = "A metropolice unit working as Civil Protection."
 FACTION.color = Color(50, 100, 150)
 FACTION.pay = 10
-FACTION.models = {"models/police.mdl"}
+FACTION.models = {"models/ma/hla/terranovafemalepolice.mdl",
+                  "models/ma/hla/terranovapolice.mdl"}
 FACTION.weapons = {"ix_stunstick"}
 FACTION.isDefault = false
 FACTION.isGloballyRecognized = true
@@ -28,7 +29,6 @@ end
 
 function FACTION:OnNameChanged(client, oldValue, value)
 	local character = client:GetCharacter()
-	[[
 	if (!Schema:IsCombineRank(oldValue, "RCT") and Schema:IsCombineRank(value, "RCT")) then
 		character:JoinClass(CLASS_MPR)
 	elseif (!Schema:IsCombineRank(oldValue, "EpU") and Schema:IsCombineRank(value, "EpU")) then
