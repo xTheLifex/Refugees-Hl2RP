@@ -31,6 +31,16 @@ function FACTION:OnNameChanged(client, oldValue, value)
 	local character = client:GetCharacter()
 	if (!Schema:IsCombineRank(oldValue, "RCT") and Schema:IsCombineRank(value, "RCT")) then
 		character:JoinClass(CLASS_MPR)
+	elseif (!Schema:IsCombineRank(oldValue, "05") and Schema:IsCombineRank(value, "05")) then
+		character:JoinClass(CLASS_MPU)
+	elseif (!Schema:IsCombineRank(oldValue, "04") and Schema:IsCombineRank(value, "05")) then
+		character:JoinClass(CLASS_MPU)
+	elseif (!Schema:IsCombineRank(oldValue, "03") and Schema:IsCombineRank(value, "05")) then
+		character:JoinClass(CLASS_MPU)
+	elseif (!Schema:IsCombineRank(oldValue, "02") and Schema:IsCombineRank(value, "05")) then
+		character:JoinClass(CLASS_MPU)
+	elseif (!Schema:IsCombineRank(oldValue, "01") and Schema:IsCombineRank(value, "05")) then
+		character:JoinClass(CLASS_MPU)
 	elseif (!Schema:IsCombineRank(oldValue, "EpU") and Schema:IsCombineRank(value, "EpU")) then
 		character:JoinClass(CLASS_EMP)
 	elseif (!Schema:IsCombineRank(oldValue, "DvL") and Schema:IsCombineRank(value, "DvL")) then
