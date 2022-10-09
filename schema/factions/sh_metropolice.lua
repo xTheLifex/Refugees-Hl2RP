@@ -34,7 +34,7 @@ function FACTION:OnNameChanged(client, oldValue, value)
 	elseif (!Schema:IsCombineRank(oldValue, "EpU") and Schema:IsCombineRank(value, "EpU")) then
 		character:JoinClass(CLASS_EMP)
 	elseif (!Schema:IsCombineRank(oldValue, "DvL") and Schema:IsCombineRank(value, "DvL")) then
-		character:SetModel("models/eliteshockcp.mdl")
+		character:JoinClass(CLASS_EMP)
 	elseif (!Schema:IsCombineRank(oldValue, "CmD") and Schema:IsCombineRank(value, "CmD")) then
 		character:SetModel("models/sect_police2.mdl")
 	elseif (!Schema:IsCombineRank(oldValue, "SCN") and Schema:IsCombineRank(value, "SCN")
