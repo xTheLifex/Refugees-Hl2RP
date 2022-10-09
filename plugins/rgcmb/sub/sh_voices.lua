@@ -19,6 +19,16 @@ function PLUGIN:AddCPVoice(clip, key, value, soldier)
     end
 end
 
+function PLUGIN:AddBadCopLine(clip, key, value, blooper)
+    local blooper = blooper or false
+    local vtype = "CP"
+    if (blooper) then
+        Schema.voices.Add(vtype, key, value, "badcop/bloopers/" .. clip .. ".wav")
+    else
+        Schema.voices.Add(vtype, key, value, "badcop/" .. clip .. ".wav")
+    end
+end
+
 -- SHARED LINES
 Schema.voices.Add("CP", "AFFIRMATIVE2", "Affirmative.", "npc/combine_soldier/vo/affirmative2.wav")
 Schema.voices.Add("CP", "AFFIRMATIVE3", "Affirmative.", "npc/combine_soldier/vo/affirmative.wav")
@@ -382,3 +392,89 @@ PLUGIN:AddOverwatchVoice("threehundred", "300", "Three-hundred")
 PLUGIN:AddOverwatchVoice("meters", "METERS", "Meters")
 PLUGIN:AddOverwatchVoice("bearing", "BEARING", "Bearing")
 PLUGIN:AddOverwatchVoice("degrees", "DEGREES", "Degrees")
+
+-- METROPOLICE
+
+
+-- BAD COP
+
+-- ally kill  --------------------------------------------------------------------------------------------------------------------------
+PLUGIN:AddBadCopLine("badcop_allypainful1_vocode", "DONT WANNA DO THAT", "Whoop. Don't wanna do that...")
+PLUGIN:AddBadCopLine("badcop_allypainful1_vocode", "WHOOP DONT WANNA DO THAT", "Whoop. Don't wanna do that...")
+PLUGIN:AddBadCopLine("badcop_allypainful1_vocode", "WHOOPS DONT WANNA DO THAT", "Whoop. Don't wanna do that...")
+PLUGIN:AddBadCopLine("badcop_allypainful2_vocode", "THAT LOOKS PAINFUL", "Ooooh.... That looks painful.")
+PLUGIN:AddBadCopLine("badcop_allypainful3_vocode", "I BETTER NOT BE NEXT", "Ugh... I better not be next.")
+PLUGIN:AddBadCopLine("badcop_allypainful3_vocode", "WALK IT OFF", "Ah, walk it off...")
+
+-- antlion --------------------------------------------------------------------------------------------------------------------------
+PLUGIN:AddBadCopLine("badcop_antlionhit1_vocode", "GO POKE SOMEBODY ELSE", "ARGH! Go poke somebody else!")
+PLUGIN:AddBadCopLine("badcop_antlionhit2_vocode", "IM NOT A DAMN PIN CUSHION", "ARGH! I'm not a damn pin cushion!")
+PLUGIN:AddBadCopLine("badcop_antlionhit3_vocode", "YOU CANT KNOCK ME DOWN", "ARGH! You can't knock me down!")
+PLUGIN:AddBadCopLine("badcop_antlionhit4_vocode", "OW LUCKY", "OWWW! You got lucky with that one!")
+PLUGIN:AddBadCopLine("badcop_antlionhit4_vocode", "OUCH LUCKY", "OWWW! You got lucky with that one!")
+PLUGIN:AddBadCopLine("badcop_antlionhit4_vocode", "OW YOU GOT LUCKY", "OWWW! You got lucky with that one!")
+PLUGIN:AddBadCopLine("badcop_antlionhit4_vocode", "OUCH YOU GOT LUCKY", "OWWW! You got lucky with that one!")
+PLUGIN:AddBadCopLine("badcop_antlionhit5_vocode", "RUDE TO POKE", "ARGH! It's rude to poke!")
+PLUGIN:AddBadCopLine("badcop_antlionhit6_vocode", "WANT A BULLET TO THE HEAD?", "Ahh! What's that?! You want a bullet to the head!?")
+PLUGIN:AddBadCopLine("badcop_antlionhit7_vocode", "I GAVE YOU THAT ONE FOR FREE", "Argh! I gave you that one for free!")
+PLUGIN:AddBadCopLine("badcop_antlionhit8_vocode", "THAT ONE TINGLED", "Argh! That one kind of tingled!")
+
+-- apc crash  --------------------------------------------------------------------------------------------------------------------------
+
+PLUGIN:AddBadCopLine("badcop_apc_crash1_vocode", "WOOPS", "Woops.")
+PLUGIN:AddBadCopLine("badcop_apc_crash2_vocode", "I MEANT TO DO THAT", "Oooof. I meant to do that.")
+PLUGIN:AddBadCopLine("badcop_apc_crash3_vocode", "DRIVING ON ICE", "Driving on ice is not as fun as I thought it would be.")
+PLUGIN:AddBadCopLine("badcop_apc_crash4_vocode", "HOPE OUT OF PAY CHECK", "Ooh. I hope they don't take that out of my paycheck")
+PLUGIN:AddBadCopLine("badcop_apc_crash5_vocode", "WILL BUFF OUT", "Urgh. I'm sure that will buff out.")
+
+PLUGIN:AddBadCopLine("badcop_apc_damage1_vocode", "HOLD IT TOGETHER BABY", "Hold it together, baby!")
+PLUGIN:AddBadCopLine("badcop_apc_damage2_vocode", "SUDDENLY EXPLODE", "This thing better not suddenly explode on me")
+PLUGIN:AddBadCopLine("badcop_apc_damage2_vocode", "THIS THING BETTER NOT SUDDENLY EXPLODE", "This thing better not suddenly explode on me")
+PLUGIN:AddBadCopLine("badcop_apc_damage3_vocode", "OW IM NOT INVINCIBLE IN THIS THING", "Oww! Shit. Look's like i'm not invincible on this thing.")
+PLUGIN:AddBadCopLine("badcop_apc_damage4_vocode", "BETTER HAVE INSURANCE", "Argh. You better have insurance...")
+PLUGIN:AddBadCopLine("badcop_apc_damage5_vocode", "HAH NOW YOU HAVE MY ATTENTION", "Now you have my attention...")
+
+-- APC FLIP
+PLUGIN:AddBadCopLine("badcop_apc_flipped_vocode", "IM NOT THE DRIFT KING", "Aaaaahhh... Shit.... Guess I'm not the drift king.")
+
+-- APC KILL
+PLUGIN:AddBadCopLine("badcop_apc_kill_gun1_vocode", "FINALLY GET TO USE", "It's so awesome I finally get to use this thing")
+PLUGIN:AddBadCopLine("badcop_apc_kill_gun2_vocode", "DID YOU THINK YOU HAD A CHANCE", "AHAHAHAHAHAHA. DID YOU HONESTLY THINK YOU HAD A CHANCE?")
+PLUGIN:AddBadCopLine("badcop_apc_kill_gun3_vocode", "GRATEFUL FOR TARGET PRACTICE", "I'm really grateful for the target practice.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_gun4_vocode", "MY GUN IS BIGGER", "MY GUN IS BIGGER THAN YOURS.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_gun5_vocode", "YOU THINK YOU STOOD A CHANCE", "You think you stood a chance against this?")
+
+-- TODO: Separate later
+
+PLUGIN:AddBadCopLine("badcop_apc_kill_rocket1_vocode", "KABOOM", "Ka-boom.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_rocket2_vocode", "BURY IN SOUP CAN", "I'll be burying what's left of you in a SOUP CAN.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_rocket3_vocode", "GOOD LUCK ID BODY", "Good luck identifying THAT body.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_rocket4_vocode", "WISH I HAD IN CITY 10", "I wish I had some of these back in City 10.")
+PLUGIN:AddBadCopLine("badcop_apc_kill_rocket5_vocode", "SAY HELLO TO MY LITTLE FRIEND", "SAY HELLO TO MY LITTLE FRIEND")
+
+PLUGIN:AddBadCopLine("badcop_apc_request_vocode", "OVERWATCH MY VEHICLE IS FUCKED", "Overwach... My... uhm... Vehicular Transporation is... inoperable... Requesting replacement...            Please.... Over.")
+
+PLUGIN:AddBadCopLine("badcop_apc_roadkill1_vocode", "LIKE BUGS ON A WINDSHIELD", "Like bugs on a windshield.")
+PLUGIN:AddBadCopLine("badcop_apc_roadkill2_vocode", "ANYBODY ELSE SEE THAT", "Hah. Did anybody else see that?")
+PLUGIN:AddBadCopLine("badcop_apc_roadkill3_vocode", "YOU SHOULD HAVE STAYED INDOORS", "You should have stayed indoors.")
+PLUGIN:AddBadCopLine("badcop_apc_roadkill4_vocode", "WHOS NEXT", "Hah. Who's next..?")
+PLUGIN:AddBadCopLine("badcop_apc_roadkill5_vocode", "DIDNT DO THIS BACK IN THE DAY", "Hah. Didn't get to do this back in the day.")
+    
+PLUGIN:AddBadCopLine("badcop_blunthit1_vocode", "THROWING SHIT", "Argh! Throwing shit..?- Seriously??")
+PLUGIN:AddBadCopLine("badcop_blunthit2_vocode", "FOR FUCKS SAKE", "Argh. For fucks sake.")
+PLUGIN:AddBadCopLine("badcop_blunthit3_vocode", "CUT THAT SHIT OUT", "Argh. Cut that shit out.")
+PLUGIN:AddBadCopLine("badcop_blunthit4_vocode", "SWALLOW MY GUM", "Ow. You almost made me swallow my gum. (If I had any)")
+PLUGIN:AddBadCopLine("badcop_blunthit5_vocode", "IF I HAD TIME TEAR YOU APART", "Argh!!. If I had the time i'd TEAR YOU APART WITH MY BARE HANDS")
+PLUGIN:AddBadCopLine("badcop_blunthit6_vocode", "ARGH NOW IM ANGRY", "Argh!! Oooooh... Now i'm angry.")
+-- I have no fucking idea what he says on this line
+-- !PLUGIN:AddBadCopLine("badcop_blunthit7_vocode", "", "")
+PLUGIN:AddBadCopLine("badcop_blunthit8_vocode", "HIT THE GUT", "Ough... Oh I think that one hit me in the gut..")
+
+
+PLUGIN:AddBadCopLine("badcop_burnt1_vocode", "OH HOT", "Oh hot hot hot! hothothothot!")
+PLUGIN:AddBadCopLine("badcop_burnt2_vocode", "NOT FIRE RETARDANT", "Argh! Jeeze! This suit is not fire retardant!")
+PLUGIN:AddBadCopLine("badcop_burnt3_vocode", "THAT BURNS", "Argh! ARgh!! ARGHH JESUS THAT BURNS")
+PLUGIN:AddBadCopLine("badcop_burnt4_vocode", "THATS GONNA LEAVE A MARK", "Argh! ARgh!! Ah, shit! That's gonna leave a mark!")
+PLUGIN:AddBadCopLine("badcop_burnt5_vocode", "OH YEAH FIRE HURTS", "Ouuw! Argh! Ow! Oh yeah, fire still hurts.")
+
+

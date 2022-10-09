@@ -5,10 +5,79 @@ function PLUGIN:AddFactionCall( enum, call )
   self.FactionCalls[ enum ] = call
 end
 
+function PLUGIN:AddClassCall( enum, call)
+  self.ClassCalls [ enum ] = call
+end
+
 local col_white = Color( 255, 255, 255 )
 local col_blue = Color(25, 101, 172)
 local col_red = Color( 255, 0, 0 )
 local col_ota = Color( 150, 70, 70)
+
+
+local function fMetropoliceNPC( npc )
+  if ( !IsValid( npc ) ) then
+    return
+  end
+  local bone = npc:LookupBone( "ValveBiped.Bip01_Head1" )
+  local pos
+  if ( !bone ) then
+    pos = npc:GetPos() + Vector( 0, 0, 72 )
+  else
+    pos = npc:GetBonePosition( bone ) + Vector( 0, 0, 14 )
+  end
+
+  local inRange = true
+  local mult = -15
+
+  if ( !LocalPlayer():IsLineOfSightClear( npc ) ) then
+    return
+  end
+
+  local distSquared = 224^2
+
+  local toScreen = pos:ToScreen()
+
+  if ( LocalPlayer():GetPos():DistToSqr( npc:GetPos() ) > distSquared ) then
+    npc.mult = Lerp( 0.02, npc.mult or 0, 0 )
+  else
+    npc.mult = Lerp( 0.02, npc.mult or 0, 1 )
+    inRange = true
+  end
+
+  toScreen.x = math.Clamp( toScreen.x, -200, ScrW() + 200 )
+  toScreen.y = math.Clamp( toScreen.y, -50, ScrH() + 50 )
+
+
+  npc.toScreenX = Lerp( 0.06, npc.toScreenX or toScreen.x, toScreen.x )
+  npc.toScreenY = Lerp( 0.06, npc.toScreenY or toScreen.y, toScreen.y )
+
+  local m = Matrix()
+  local mPos = Vector( npc.toScreenX, npc.toScreenY )
+  m:Translate( mPos )
+  local scale = npc.mult * ( Vector(1, 1, 1) * ( 90/LocalPlayer():GetPos():Distance( npc:GetPos() ) ) )
+  m:Scale( scale )
+  m:Translate( -mPos )
+
+  local rank = "i5"
+
+  local id = "1"
+
+  local tag = "Dagger"
+
+
+  local useTag = ix.config.Get( "Use Taglines", false )
+  cam.PushModelMatrix( m )
+    draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_blue, TEXT_ALIGN_CENTER )
+    if ( useTag ) then
+      draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
+    else
+      draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
+    end
+  cam.PopModelMatrix()
+  return inRange, mult
+end
+
 local function fCitizen( client )
   if ( !IsValid( client ) ) then
     return

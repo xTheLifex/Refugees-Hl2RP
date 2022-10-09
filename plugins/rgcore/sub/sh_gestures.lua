@@ -177,6 +177,36 @@ if (SERVER) then
       net.WriteBool(headshot)
       net.Broadcast()
    end
+
+   local surprised = {"what"}
+   local look = {"look", "listen", ""}
+
+   local function HasKeywords(text, keywords, all)
+      local all = all or false -- All or any
+
+      for _, key in ipairs(keywords) do
+         if (string.find(string.lower(text), string.lower(key))) then
+            if (!all) then -- any
+               return true
+            end
+         else
+            if (all)  then
+               return false
+            end
+         end
+      end   
+
+      return false
+   end
+
+   function PLUGIN:DoSpeakingGestures(speaker, chatType, text, anonymous, receivers, rawText)
+      local chatTypes = {["ic"] = true, ["w"] = true, ["y"] = true}
+      if (!chatTypes[chatType]) then return end
+
+   end
+
+
+
 end
 
 

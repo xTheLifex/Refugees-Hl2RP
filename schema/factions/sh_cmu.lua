@@ -36,4 +36,16 @@ function FACTION:OnCharacterCreated(client, character)
 	groups[1] = 17
 	groups[2] = 9
 	character:SetData("groups", groups)
+
+	local id = Schema:ZeroNumber(math.random(1, 99999), 5)
+	local inventory = character:GetInventory()
+
+	character:SetData("cid", id)
+
+	inventory:Add("suitcase", 1)
+	--inventory:Add("cwu_clothes", 1)
+	inventory:Add("cid", 1, {
+		name = character:GetName(),
+		id = id
+	})
 end

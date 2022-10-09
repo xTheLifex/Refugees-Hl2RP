@@ -25,14 +25,19 @@ do
             local gestures = {}
             gestures["look"] = {"g_look"}
             gestures["looksmall"] = {"g_look_small"}
-            gestures["lookatthis"] = {"g_lookatthis"}
+            gestures["comehere"] = {"g_lookatthis"}
             gestures["punct"] = {"g_medpuct_mid"}
             gestures["punct2"] = {"g_medurgent_mid"}
             gestures["punct3"] = {"g_puncuate"}
             gestures["righthand"] = {"g_righthandheavy"}
-            gestures["rightpoint"] = {"g_righthandmotion"}
+            gestures["rightpointback"] = {"g_righthandmotion"}
+            gestures["rightpoint"] = {"g_righthandpoint"}
+            gestures["righthandroll"] = {"g_righthandroll"}
             gestures["nowaybig"] = {"g_noway_big"}
             gestures["noway"] = {"g_noway_small"}
+            gestures["fear"] = {"fear_reaction_gesture"}
+            gestures["what"] = {"g_what"}
+            gestures["shrug"] = {"g_shrug"}
             -- TODO: Finish
             local tab = gestures[str]
             if (!tab) then return end
