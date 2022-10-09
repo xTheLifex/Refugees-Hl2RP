@@ -65,7 +65,7 @@ if (SERVER) then
         "npc_mossman"
     }
 
-    relations = {}
+    local relations = {}
     relations[SIDE_COMBINE] = {}
     relations[SIDE_COMBINE][SIDE_ANTLIONS] = D_HT
     relations[SIDE_COMBINE][SIDE_ZOMBIES] = D_HT
@@ -143,9 +143,22 @@ if (SERVER) then
 
             -- Check if player has a weapon equipped.
             -- TODO: Whitelist?
+
+            -- TODO: Move outside the function?
+            local guns = {
+                ["weapon_pistol"] = true,
+                ["weapon_smg1"] = true,
+                ["weapon_ar2"] = true,
+                ["weapon_grenade"] = true,
+                ["weapon_shotgun"] = true,
+                ["weapon_rpg"] = true
+            }
+
+            local hasGuns = guns[ply:GetActiveWeapon()] or false
+
             local inv = char:GetInventory()
             if (inv) then
-                if (inv:HasItemOfBase('base_weapons', {["equip"] = true})) then
+                if (inv:HasItemOfBase('base_weapons', {["equip"] = true}) or hasGuns) then
                     self:FlagAsResistance(ply, 60)
                     return SIDE_RESISTANCE
                 end
@@ -178,7 +191,7 @@ if (SERVER) then
 
         return nil
     end
-
+    
     function PLUGIN:GetSideRelationship(side, other)
         local relation = relations[side]
         if (!relation) then return nil end
@@ -186,8 +199,10 @@ if (SERVER) then
     end
 
     function PLUGIN:PlayerDeath(victim, inflictor, attacker)
-        self.relResistanceTimeouts[victim] = 0
-        self:UpdateRelationships()
+        timer.Simple(2, function() 
+            self.relResistanceTimeouts[victim] = 0
+            self:UpdateRelationships()
+        end)
     end
 
     function PLUGIN:FlagAsResistance(ply, time)
