@@ -5,17 +5,13 @@ function PLUGIN:AddFactionCall( enum, call )
   self.FactionCalls[ enum ] = call
 end
 
-function PLUGIN:AddClassCall( enum, call)
-  self.ClassCalls [ enum ] = call
-end
-
 local col_white = Color( 255, 255, 255 )
 local col_blue = Color(25, 101, 172)
 local col_red = Color( 255, 0, 0 )
 local col_ota = Color( 150, 70, 70)
 
 
-local function fMetropoliceNPC( npc )
+local function fNPC( npc )
   if ( !IsValid( npc ) ) then
     return
   end
@@ -58,25 +54,64 @@ local function fMetropoliceNPC( npc )
   local scale = npc.mult * ( Vector(1, 1, 1) * ( 90/LocalPlayer():GetPos():Distance( npc:GetPos() ) ) )
   m:Scale( scale )
   m:Translate( -mPos )
+  
+  local TYPE_UNKNOWN = 0
+  local TYPE_CITIZEN = 1
+  local TYPE_METROCOP = 2
+  local TYPE_SOLDIER = 3
 
-  local rank = "i5"
+  local types = {
+    ["npc_combine_s"] = TYPE_SOLDIER,
+    ["npc_rp_combine_s"] = TYPE_SOLDIER,
+    ["npc_metropolice"] = TYPE_METROCOP,
+    ["npc_citizen"] = TYPE_CITIZEN,
+  }
 
-  local id = "1"
+  local class = npc:GetClass()
+  
+  local mytype = types[class] or TYPE_UNKNOWN
 
-  local tag = "Dagger"
-
+  -- TODO: Get from VJ NPCs if they are one of RP NPCs.
+  local name = npc:GetNWString("name", "UNKNOWN")
+  local tag = npc:GetNWString("tagline", "???")
+  local tagnum = npc:GetNWInt("tagnum", "?")
+  local id = npc:GetNWInt("id", "????")
+  local rank = npc:GetNWString("rank", "[???]")
 
   local useTag = ix.config.Get( "Use Taglines", false )
   cam.PushModelMatrix( m )
-    draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_blue, TEXT_ALIGN_CENTER )
-    if ( useTag ) then
-      draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
-    else
-      draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
+    if (mytype == TYPE_METROCOP) then
+      draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_blue, TEXT_ALIGN_CENTER )
+      if ( useTag ) then
+        draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. tagnum .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
+      else
+        draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_blue, TEXT_ALIGN_CENTER )
+      end
+    end  
+
+    if (mytype == TYPE_SOLDIER) then
+      draw.SimpleText( "<:: Unit Rank: " .. rank .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_ota, TEXT_ALIGN_CENTER )
+      if ( useTag ) then
+        draw.SimpleText( "<:: Unit ID: " .. tag .. "-" .. tagnum .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_ota, TEXT_ALIGN_CENTER )
+      else
+        draw.SimpleText( "<:: Unit ID: " .. id .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY, col_ota, TEXT_ALIGN_CENTER )
+      end
     end
+
+    local chud = ix.plugin.Get("chud")
+    if (mytype == TYPE_CITIZEN) then
+      draw.SimpleText( "<:: Name: " .. name .. " ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_white, TEXT_ALIGN_CENTER )
+    end
+
+    if (mytype == TYPE_UNKNOWN) then
+      draw.SimpleText( "<:: UNKNOWN ::>", "DebugOverlay", npc.toScreenX, npc.toScreenY + 15, col_red, TEXT_ALIGN_CENTER )
+    end
+    
   cam.PopModelMatrix()
   return inRange, mult
 end
+PLUGIN.NPCCall = fNPC
+
 
 local function fCitizen( client )
   if ( !IsValid( client ) ) then

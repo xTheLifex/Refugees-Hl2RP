@@ -7,7 +7,6 @@ if (SERVER) then
     local SIDE_RESISTANCE = 5
     local SIDE_CIVILIAN = 6
 
-
     local sides = {}
     sides[SIDE_COMBINE] = {
         "npc_combine_s",
@@ -24,8 +23,7 @@ if (SERVER) then
         "npc_combine_camera",
         "npc_combinedropship",
         "npc_hunter",
-        "npc_combinegunship",
-        "npc_rp_combine_s"
+        "npc_combinegunship"
     }
     sides[SIDE_ANTLIONS] = {
         "npc_antlion",
@@ -65,7 +63,7 @@ if (SERVER) then
         "npc_mossman"
     }
 
-    relations = {}
+    local relations = {}
     relations[SIDE_COMBINE] = {}
     relations[SIDE_COMBINE][SIDE_ANTLIONS] = D_HT
     relations[SIDE_COMBINE][SIDE_ZOMBIES] = D_HT
@@ -97,6 +95,14 @@ if (SERVER) then
     relations[SIDE_BIRDS][SIDE_RESISTANCE] = D_FR
     relations[SIDE_BIRDS][SIDE_CIVILIAN] = D_FR
     
+    function PLUGIN:GetSides()
+        return sides 
+    end
+
+    function PLUGIN:GetRelations()
+        return relations
+    end
+
 
     local combines = {
         [FACTION_MPF] = true,
@@ -134,6 +140,7 @@ if (SERVER) then
         local faction = char:GetFaction()
 
         if (combines[faction]) then
+            self.relResistanceTimeouts[ply] = 0
             return SIDE_COMBINE 
         end
 
@@ -142,10 +149,23 @@ if (SERVER) then
 
             -- Check if player has a weapon equipped.
             -- TODO: Whitelist?
+
+            -- TODO: Move outside the function?
+            local guns = {
+                ["weapon_pistol"] = true,
+                ["weapon_smg1"] = true,
+                ["weapon_ar2"] = true,
+                ["weapon_grenade"] = true,
+                ["weapon_shotgun"] = true,
+                ["weapon_rpg"] = true
+            }
+
+            local hasGuns = guns[ply:GetActiveWeapon()] or false
+
             local inv = char:GetInventory()
             if (inv) then
-                if (inv:HasItemOfBase('base_weapons', {["equip"] = true})) then
-                    self:FlagAsResistance(ply, -1)
+                if (inv:HasItemOfBase('base_weapons', {["equip"] = true}) or hasGuns) then
+                    self:FlagAsResistance(ply, 60)
                     return SIDE_RESISTANCE
                 end
             end
@@ -177,7 +197,7 @@ if (SERVER) then
 
         return nil
     end
-
+    
     function PLUGIN:GetSideRelationship(side, other)
         local relation = relations[side]
         if (!relation) then return nil end
@@ -185,8 +205,10 @@ if (SERVER) then
     end
 
     function PLUGIN:PlayerDeath(victim, inflictor, attacker)
-        self.relResistanceTimeouts[victim] = 0
-        self:UpdateRelationships()
+        timer.Simple(2, function() 
+            self.relResistanceTimeouts[victim] = 0
+            self:UpdateRelationships()
+        end)
     end
 
     function PLUGIN:FlagAsResistance(ply, time)

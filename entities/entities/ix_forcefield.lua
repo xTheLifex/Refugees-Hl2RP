@@ -9,7 +9,7 @@ ENT.AdminOnly = true
 ENT.RenderGroup = RENDERGROUP_BOTH
 ENT.PhysgunDisabled = true
 ENT.bNoPersist = true
-
+ENT.enabled = true
 ENT.whitelist = {}
 ENT.whitelist["npc_combine_s"]  			=	true
 ENT.whitelist["npc_metropolice"]  			=	true
