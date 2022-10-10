@@ -3,7 +3,7 @@ ITEM.name = "Cola"
 ITEM.model = "models/hlvr/food/can_1.mdl"
 ITEM.width = 1
 ITEM.height = 1
-ITEM.description = "A can of no-name brand cola. Not too bad."
+ITEM.description = "A can of no-name brand cola. Not too bad. Tastes sweet, really sweet."
 ITEM.category = "Consumables"
 ITEM.permit = "consumables"
 
