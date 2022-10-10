@@ -1,5 +1,5 @@
 ITEM.name = "Blue Jeans"
-ITEM.model = Model("models/props_c17/paper01.mdl")
+ITEM.model = Model("models/fty/items/pants_citizen.mdl")
 ITEM.description = "Your standard citizen attires."
 
 ITEM.bodygroups = {
