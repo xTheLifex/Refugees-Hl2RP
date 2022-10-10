@@ -33,13 +33,13 @@ function FACTION:OnNameChanged(client, oldValue, value)
 		character:JoinClass(CLASS_MPR)
 	elseif (!Schema:IsCombineRank(oldValue, "05") and Schema:IsCombineRank(value, "05")) then
 		character:JoinClass(CLASS_MPU)
-	elseif (!Schema:IsCombineRank(oldValue, "04") and Schema:IsCombineRank(value, "05")) then
+	elseif (!Schema:IsCombineRank(oldValue, "04") and Schema:IsCombineRank(value, "04")) then
 		character:JoinClass(CLASS_MPU)
-	elseif (!Schema:IsCombineRank(oldValue, "03") and Schema:IsCombineRank(value, "05")) then
+	elseif (!Schema:IsCombineRank(oldValue, "03") and Schema:IsCombineRank(value, "03")) then
 		character:JoinClass(CLASS_MPU)
-	elseif (!Schema:IsCombineRank(oldValue, "02") and Schema:IsCombineRank(value, "05")) then
+	elseif (!Schema:IsCombineRank(oldValue, "02") and Schema:IsCombineRank(value, "02")) then
 		character:JoinClass(CLASS_MPU)
-	elseif (!Schema:IsCombineRank(oldValue, "01") and Schema:IsCombineRank(value, "05")) then
+	elseif (!Schema:IsCombineRank(oldValue, "01") and Schema:IsCombineRank(value, "01")) then
 		character:JoinClass(CLASS_MPU)
 	elseif (!Schema:IsCombineRank(oldValue, "EpU") and Schema:IsCombineRank(value, "EpU")) then
 		character:JoinClass(CLASS_EMP)
