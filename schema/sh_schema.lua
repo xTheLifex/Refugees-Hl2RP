@@ -23,11 +23,8 @@ ix.util.Include("meta/sh_character.lua")
 ix.flag.Add("v", "Access to light blackmarket goods.")
 ix.flag.Add("V", "Access to heavy blackmarket goods.")
 
-ix.anim.SetModelClass("models/eliteghostcp.mdl", "metrocop")
-ix.anim.SetModelClass("models/eliteshockcp.mdl", "metrocop")
-ix.anim.SetModelClass("models/leet_police2.mdl", "metrocop")
-ix.anim.SetModelClass("models/sect_police2.mdl", "metrocop")
-ix.anim.SetModelClass("models/policetrench.mdl", "metrocop")
+ix.anim.SetModelClass("models/ma/hla/terranovapolice.mdl", "metrocop")
+ix.anim.SetModelClass("models/ma/hla/terranovafemalepolice.mdl", "metrocop")
 
 function Schema:ZeroNumber(number, length)
 	local amount = math.max(0, length - string.len(number))
