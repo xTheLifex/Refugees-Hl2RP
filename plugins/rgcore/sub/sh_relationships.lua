@@ -7,7 +7,6 @@ if (SERVER) then
     local SIDE_RESISTANCE = 5
     local SIDE_CIVILIAN = 6
 
-
     local sides = {}
     sides[SIDE_COMBINE] = {
         "npc_combine_s",
@@ -24,8 +23,7 @@ if (SERVER) then
         "npc_combine_camera",
         "npc_combinedropship",
         "npc_hunter",
-        "npc_combinegunship",
-        "npc_rp_combine_s"
+        "npc_combinegunship"
     }
     sides[SIDE_ANTLIONS] = {
         "npc_antlion",
@@ -97,6 +95,14 @@ if (SERVER) then
     relations[SIDE_BIRDS][SIDE_RESISTANCE] = D_FR
     relations[SIDE_BIRDS][SIDE_CIVILIAN] = D_FR
     
+    function PLUGIN:GetSides()
+        return sides 
+    end
+
+    function PLUGIN:GetRelations()
+        return relations
+    end
+
 
     local combines = {
         [FACTION_MPF] = true,
