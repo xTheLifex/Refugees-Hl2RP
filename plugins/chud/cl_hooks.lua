@@ -125,14 +125,6 @@ local function GetRange()
 	return text, col_white, true, hit
 end
 
-local soldiers = {
-	"npc_combine_s"
-}
-
-local metropolice = {
-	"npc_metropolice"
-}
-
 function PLUGIN:HUDPaint()
 	if ( !IsValid( client ) ) then
 		client = LocalPlayer()
@@ -191,30 +183,7 @@ function PLUGIN:HUDPaint()
 					continue 
 			end
 
-			local mytype = nil
-
-			local myclass = v:GetClass()
-
-			if (! self.ClassCalls[ myclass ]) then
-					continue
-			end
-
-			-- Soldier
-			for _,class in ipairs(soldiers) do
-					if (myclass == class) then
-							mytype = "ota"
-					end
-			end
-			-- Metrocop
-			for _,class in ipairs(metropolice) do
-					if (myclass == class) then
-							mytype = "cp"
-					end
-			end
-
-			if (!mytype) then continue end
-
-			local suc, res, mult = pcall( self.ClassCalls[ mytype ], v )
+			local suc, res, mult = pcall( self.NPCCall, v )
 
 			if ( suc and res ) then
 					projectedThreat = projectedThreat + mult
@@ -222,7 +191,7 @@ function PLUGIN:HUDPaint()
 		
 		
 			if ( !suc ) then
-					ErrorNoHalt( "Warning callback has failed for " .. v:GetName() .. "'s faction!\n" .. res .. "\n" )
+					ErrorNoHalt( "Warning callback has failed for " .. v:GetClass() .. "!\n" .. res .. "\n" )
 			end
 		end	
 
