@@ -3,7 +3,10 @@ FACTION.name = "Overwatch Transhuman Arm"
 FACTION.description = "A transhuman Overwatch soldier produced by the Combine."
 FACTION.color = Color(150, 50, 50, 255)
 FACTION.pay = 40
-FACTION.models = {"models/combine_soldier.mdl"}
+FACTION.models = {
+	"models/nemez/combine_soldiers/combine_soldier_f.mdl",
+	"models/nemez/combine_soldiers/combine_soldier_h.mdl"
+}
 FACTION.isDefault = false
 FACTION.isGloballyRecognized = true
 FACTION.runSounds = {[0] = "NPC_CombineS.RunFootstepLeft", [1] = "NPC_CombineS.RunFootstepRight"}
