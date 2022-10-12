@@ -37,8 +37,8 @@ function FACTION:OnCharacterCreated(client, character)
 	character:SetData("cid", id)
 
 	inventory:Add("suitcase", 1)
-	inventory:Add("cwu_jumpsuit", 1)
-	inventory:Add("jeans", 1)
+	--inventory:Add("cwu_jumpsuit", 1)
+	--inventory:Add("jeans", 1)
 	inventory:Add("cid", 1, {
 		name = character:GetName(),
 		id = id
