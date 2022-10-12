@@ -36,6 +36,13 @@ if (CLIENT) then
         net.WriteColor(color)
         net.SendToServer()
     end
+
+    function PLUGIN:ShouldShowPlayerOnScoreboard(client)
+        local char = client:GetCharacter()
+        if (char) then
+            if (char:GetFaction() == FACTION_OTA) then return false end
+        end
+    end
 end
 
 ix.util.Include("sub/sh_voices.lua")
