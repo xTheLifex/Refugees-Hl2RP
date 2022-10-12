@@ -5,6 +5,7 @@ FACTION.isDefault = true
 FACTION.models = {
 	"models/vortigaunt.mdl"
 }
+FACTION.isDefault = false
 
 function FACTION:OnCharacterCreated(client, character)
 	local id = Schema:ZeroNumber(math.random(1, 99999), 5)
