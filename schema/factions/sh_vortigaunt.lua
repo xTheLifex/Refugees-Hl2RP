@@ -3,7 +3,7 @@ FACTION.description = "The Vortigaunts are a sapient alien species found through
 FACTION.color = Color(61, 155, 61)
 FACTION.isDefault = true
 FACTION.models = {
-	"models/vortigaunt.mdl"
+	"models/vortigaunt_slave.mdl"
 }
 FACTION.isDefault = false
 
