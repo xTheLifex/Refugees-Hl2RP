@@ -2,11 +2,8 @@
 FACTION.name = "Overwatch Transhuman Arm"
 FACTION.description = "A transhuman Overwatch soldier produced by the Combine."
 FACTION.color = Color(150, 50, 50, 255)
-FACTION.pay = 40
-FACTION.models = {
-	"models/nemez/combine_soldiers/combine_soldier_f.mdl",
-	"models/nemez/combine_soldiers/combine_soldier_h.mdl"
-}
+FACTION.pay = 100
+FACTION.models = {"models/nemez/combine_soldiers/combine_soldier_h.mdl"}
 FACTION.isDefault = false
 FACTION.isGloballyRecognized = true
 FACTION.runSounds = {[0] = "NPC_CombineS.RunFootstepLeft", [1] = "NPC_CombineS.RunFootstepRight"}
@@ -14,11 +11,9 @@ FACTION.runSounds = {[0] = "NPC_CombineS.RunFootstepLeft", [1] = "NPC_CombineS.R
 function FACTION:OnCharacterCreated(client, character)
 	local inventory = character:GetInventory()
 
-	inventory:Add("pistol", 1)
-	inventory:Add("pistolammo", 2)
-
 	inventory:Add("ar2", 1)
-	inventory:Add("ar2ammo", 2)
+	inventory:Add("ar2ammo", 4)
+	inventory:Add("handheld_radio", 1)
 end
 
 function FACTION:GetDefaultName(client)
