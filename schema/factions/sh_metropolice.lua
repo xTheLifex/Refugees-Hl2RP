@@ -19,7 +19,7 @@ function FACTION:OnCharacterCreated(client, character)
 end
 
 function FACTION:GetDefaultName(client)
-	return "C03:RCT-" .. Schema:ZeroNumber(math.random(1, 9999), 4), true
+	return "CCA-C34:RCT-" .. Schema:ZeroNumber(math.random(1, 9999), 4), true
 end
 
 function FACTION:OnTransferred(character)
