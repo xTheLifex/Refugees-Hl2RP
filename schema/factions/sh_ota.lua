@@ -16,23 +16,19 @@ function FACTION:OnCharacterCreated(client, character)
 	inventory:Add("handheld_radio", 1)
 end
 
+local function Pick(t)
+    if (istable(t)) then
+      return t[math.random(1, #t)]
+    else
+      return t
+    end
+end
+
 function FACTION:GetDefaultName(client)
-	return "OTA-ECHO.OWS-" .. Schema:ZeroNumber(math.random(1, 99999), 5), true
-end
-
-function FACTION:OnTransferred(character)
-	character:SetName(self:GetDefaultName())
-	character:SetModel(self.models[1])
-end
-
-function FACTION:OnNameChanged(client, oldValue, value)
-	local character = client:GetCharacter()
-
-	if (!Schema:IsCombineRank(oldValue, "OWS") and Schema:IsCombineRank(value, "OWS")) then
-		character:JoinClass(CLASS_OWS)
-	elseif (!Schema:IsCombineRank(oldValue, "EOW") and Schema:IsCombineRank(value, "EOW")) then
-		character:JoinClass(CLASS_EOW)
-	end
+	local tagline = Pick({ "FLASH", "RANGER", "HUNTER", "BLADE", "SCAR", "HAMMER", "SWEEPER", "SWIFT", "FIST", "SWORD", "SAVAGE", "TRACKER", "SLASH", "RAZOR", "STAB", "SPEAR", "STRIKER", "DAGGER" })
+	local tagnumber = math.random(1,9)
+	local id = Schema:ZeroNumber(math.random(1, 99999), 5)
+	return "OTA-OWS:" .. tagline .. "-" .. tagnumber .. ":" .. id, true
 end
 
 FACTION_OTA = FACTION.index
