@@ -25,6 +25,11 @@ function PLUGIN:Log(text)
    print("[RG-CORE] " .. tostring(text))
 end
 
+function PLUGIN:CanPlayerUseBusiness(ply, uid)
+   return false
+end
+
+
 -- Submodules
 ix.util.Include("sub/sh_footsteps.lua")
 ix.util.Include("sub/sh_gestures.lua")
