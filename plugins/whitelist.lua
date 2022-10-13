@@ -33,16 +33,22 @@ if SERVER then
     function PLUGIN:CheckPassword(steamID64)
         local steamID = util.SteamIDFrom64(steamID64)
 
-        if (!client:IsAdmin() and !client:IsSuperAdmin()) then
-            if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
-                return false, "Sorry, you are not whitelisted for " .. GetHostName()
+        if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
+            local admin = false
+            if (client:IsAdmin()) then admin = true end
+            if (client:IsSuperAdmin()) then admin = true end
+            if (!admin) then
+                game.KickID(uniqueID, "Sorry, you are not whitelisted for this server!\nApply on our Discord: discord.gg/7QJe9axfe3")
             end
         end
     end
 
     function PLUGIN:PlayerAuthed(client, steamID, uniqueID)
-        if (!client:IsAdmin() and !client:IsSuperAdmin()) then
-            if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
+        if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
+            local admin = false
+            if (client:IsAdmin()) then admin = true end
+            if (client:IsSuperAdmin()) then admin = true end
+            if (!admin) then
                 game.KickID(uniqueID, "Sorry, you are not whitelisted for this server!\nApply on our Discord: discord.gg/7QJe9axfe3")
             end
         end

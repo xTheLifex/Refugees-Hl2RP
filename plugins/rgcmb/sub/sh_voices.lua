@@ -334,7 +334,7 @@ PLUGIN:AddOverwatchVoice("executingfullresponse", "FULL RESPONSE", "Executing fu
 PLUGIN:AddOverwatchVoice("executingfullresponse", "EXECUTING FULL RESPONSE", "Executing full response!")
 PLUGIN:AddOverwatchVoice("goactiveintercept", "GO ACTIVE INTERCEPT", "Go active intercept.")
 PLUGIN:AddOverwatchVoice("gosharp", "GO SHARP", "Go sharp!")
-PLUGIN:AddOverwatchVoice("holdingon10-14duty", "10-14", "Holding on 10-14 duty.")
+PLUGIN:AddOverwatchVoice("holdingon10-14duty", "10-14", "Holding on 10-14 duty.", false)
 PLUGIN:AddOverwatchVoice("isatcode", "IS AT CODE", "is at code")
 PLUGIN:AddOverwatchVoice("isholdingatcode", "IS HOLDING AT CODE", "is holding at code")
 PLUGIN:AddOverwatchVoice("noviscon", "NO VISCON", "No Viscon.")
