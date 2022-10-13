@@ -246,6 +246,11 @@ if (SERVER) then
                         if (speaker:Team() == FACTION_MPF) then
                             sounds = {"NPC_MetroPolice.Radio.On", unpack(sounds)}
                             pitchdata = {100, unpack(pitchdata)}
+                        elseif (speaker:IsDispatch()) then
+                            local t = {"npc/overwatch/radiovoice/on1.wav", "npc/overwatch/radiovoice/on3.wav"}
+                            local on = t[math.random(1,#t)]
+                            sounds = {on, unpack(sounds)}
+                            pitchdata = {math.random(95, 105), unpack(pitchdata)}
                         elseif (speaker:Team() == FACTION_OTA) then
                             sounds = {"OverwatchRadio.On", unpack(sounds)}
                             pitchdata = {100, unpack(pitchdata)}
@@ -256,6 +261,11 @@ if (SERVER) then
                             if (speaker:Team() == FACTION_MPF) then
                                 table.insert(sounds, "NPC_MetroPolice.Radio.Off")
                                 table.insert(pitchdata, 100)
+                            elseif (speaker:IsDispatch()) then
+                                local t = {"npc/overwatch/radiovoice/off2.wav", "npc/overwatch/radiovoice/off4.wav"}
+                                local off = t[math.random(1,#t)]
+                                table.insert(sounds, off)
+                                table.insert(pitchdata, math.random(95, 105))
                             elseif(speaker:Team() == FACTION_OTA) then
                                 table.insert(sounds, "OverwatchRadio.Off")
                                 table.insert(pitchdata, 100)
