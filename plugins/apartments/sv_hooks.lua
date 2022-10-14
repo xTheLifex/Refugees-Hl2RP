@@ -12,10 +12,6 @@ function PLUGIN:LoadData()
                 lock:Spawn()
                 lock:SetDoor(door, door:LocalToWorld(v[2]), door:LocalToWorldAngles(v[3]))
                 lock:SetLocked(v[4])
-                local owners = tostring(v[5])
-                if owners then
-                    lock:SetOwners(owners)
-                end
             end
         end
     end
@@ -30,8 +26,7 @@ function PLUGIN:SaveData()
 				v.door:MapCreationID(),
 				v.door:WorldToLocal(v:GetPos()),
 				v.door:WorldToLocalAngles(v:GetAngles()),
-				v:GetLocked(),
-                v:GetOwners()
+				v:GetLocked()
 			}
 		end
 	end
