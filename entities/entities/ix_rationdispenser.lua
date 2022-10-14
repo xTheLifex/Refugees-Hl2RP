@@ -158,7 +158,13 @@ if (SERVER) then
 			return
 		end
 
-		if (client:Team() == FACTION_CITIZEN) then
+		local citizens = {
+			[FACTION_CITIZEN] = true,
+			[FACTION_CWU] = true,
+			[FACTION_CMU] = true
+		}
+
+		if (citizens[client:Team()]) then
 			if (!self:GetEnabled()) then
 				self:TriggerOutput("OnDenyRation", client)
 				self:DisplayError(6)
