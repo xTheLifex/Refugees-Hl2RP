@@ -4,7 +4,7 @@ ITEM.model = Model("models/gibs/metal_gib4.mdl")
 ITEM.description = "A citizen identification card with ID #%s, assigned to %s."
 
 function ITEM:GetDescription()
-	return string.format(self.description, self:GetData("id", "00000"), self:GetData("name", "nobody"))
+	return "A citizen identification card with ID #" .. self:GetData("id", "0000").. ", assigned to " .. self:GetData("name", "nobody").. "."
 end
 
 ITEM.functions.AssignApt = {
@@ -62,7 +62,7 @@ ITEM.functions.Assign = {
 			local char = ent:GetCharacter()
 			if (!char) then return false end
 			item:SetData("name", char:GetName())
-			item:SetData("cid", char:GetData("cid"))
+			item:SetData("id", char:GetData("cid", "0000"))
 			ply:Notify("Assigned CID to " .. char:GetName())
 		end
 		return false
