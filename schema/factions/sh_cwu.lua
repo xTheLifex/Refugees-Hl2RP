@@ -1,6 +1,7 @@
 FACTION.name = "Civil Workers Union"
 FACTION.description = "Universal Union approved working shit."
 FACTION.color = Color(3, 152, 252)
+FACTION.pay = 15
 FACTION.models = {
 	{"models/fty/citizens/female_01.mdl", 0, "031"},
 	{"models/fty/citizens/female_02.mdl", 0, "031"},
