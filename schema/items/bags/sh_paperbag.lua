@@ -1,0 +1,9 @@
+ITEM.name = "Paper Bag"
+ITEM.description = "A paper bag used to hold items."
+ITEM.model = "models/props_junk/garbage_bag001a.mdl"
+ITEM.category = "Storage"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.invWidth = 3
+ITEM.invHeight = 1
+ITEM.isBag = true

@@ -1,0 +1,9 @@
+ITEM.name = "Pouch"
+ITEM.description = "A pouch used to hold items."
+ITEM.model = "models/props_lab/box01a.mdl"
+ITEM.category = "Storage"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.invWidth = 1
+ITEM.invHeight = 3
+ITEM.isBag = true
