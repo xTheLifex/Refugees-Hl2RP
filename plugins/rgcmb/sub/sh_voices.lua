@@ -538,6 +538,7 @@ PLUGIN:AddDispatchVoice("fcitadel_15sectosingularity", "15S TO SINGULARITY", "Pr
 PLUGIN:AddDispatchVoice("fcitadel_10sectosingularity", "10S TO SINGULARITY", "Priority Warning: 10 Seconds to singularity.", true)
 
 
+PLUGIN:AddDispatchVoice("zero", "0", "Zero.")
 PLUGIN:AddDispatchVoice("one", "1", "One.")
 PLUGIN:AddDispatchVoice("two", "2", "Two.")
 PLUGIN:AddDispatchVoice("three", "3", "Three.")
@@ -573,7 +574,7 @@ PLUGIN:AddDispatchVoice("anticitizen", "ANTI-CITIZEN", "Anti-citizen.")
 PLUGIN:AddDispatchVoice("antifatigueration3mg", "ANTI-FATIGUE", "Anti-fatigue ration is now: 3 miligrams.")
 PLUGIN:AddDispatchVoice("apply", "APPLY", "Apply.")
 PLUGIN:AddDispatchVoice("attention", "ATTENTION", "Attention: ")
-PLUGIN:AddDispatchVoice("beginscanning10av", "10-0", "10-0. Begin scanning.")
+PLUGIN:AddDispatchVoice("beginscanning10-0", "10-0", "10-0. Begin scanning.")
 PLUGIN:AddDispatchVoice("block", "BLOCK", "Block.")
 PLUGIN:AddDispatchVoice("canalblock", "CANAL BLOCK", "Canal Block.")
 PLUGIN:AddDispatchVoice("cauterize", "CAUTERIZE", "Cauterize.")
