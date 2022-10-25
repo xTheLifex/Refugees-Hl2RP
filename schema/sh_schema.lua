@@ -28,6 +28,15 @@ ix.anim.SetModelClass("models/eliteshockcp.mdl", "metrocop")
 ix.anim.SetModelClass("models/leet_police2.mdl", "metrocop")
 ix.anim.SetModelClass("models/sect_police2.mdl", "metrocop")
 ix.anim.SetModelClass("models/policetrench.mdl", "metrocop")
+
+ix.anim.SetModelClass("models/dpfilms/metropolice/civil_medic.mdl", "metrocop")
+ix.anim.SetModelClass("models/dpfilms/metropolice/retrocop.mdl", "metrocop")
+ix.anim.SetModelClass("models/dpfilms/metropolice/hdpolice.mdl", "metrocop")
+ix.anim.SetModelClass("models/dpfilms/metropolice/elite_police.mdl", "metrocop")
+ix.anim.SetModelClass("models/dpfilms/metropolice/policetrench.mdl", "metrocop")
+ix.anim.SetModelClass("models/dpfilms/metropolice/police_bt.mdl", "metrocop")
+
+
 ix.anim.SetModelClass("models/ma/hla/terranovafemalepolice.mdl", "metrocop")
 ix.anim.SetModelClass("models/ma/hla/terranovapolice.mdl", "metrocop")
 ix.anim.SetModelClass("models/vortigaunt.mdl", "vortigaunt")
