@@ -10,7 +10,6 @@ ENT.bNoPersist = true
 
 function ENT:SetupDataTables()
 	self:NetworkVar("Bool", 0, "Locked")
-	self:NetworkVar("String", 0, "Owners")
 	self:NetworkVar("Bool", 1, "DisplayError")
 
 	if (SERVER) then
@@ -75,8 +74,6 @@ if (SERVER) then
         entity:Activate()
         entity:SetDoor(door, position, angles)
         entity:DrawShadow(false)
-    
-        PLUGIN:SaveData()
         return entity
     end
     
@@ -152,73 +149,45 @@ if (SERVER) then
             return
         end
 
-        local cid = client:GetCharacter():GetInventory():HasItem("cid")
-
         if client:IsCombine() then
             self:SetLocked(!self:GetLocked())
             self.nextUseTime = CurTime() + 2
             return
         end
 
+        local cid = client:GetCharacter():GetInventory():HasItem("cid")
         if (!cid) then
             self:DisplayError()
             self.nextUseTime = CurTime() + 2
-    
             return
         end
 
-        if ( !self:AlreadyOwned(cid:GetData("id")) ) then
-            self:DisplayError()
+        if (self:HasAccess(client, cid)) then
+            self:SetLocked(!self:GetLocked())
             self.nextUseTime = CurTime() + 2
-    
             return
         end
-    
-        self:SetLocked(!self:GetLocked())
+
+        self:DisplayError()
         self.nextUseTime = CurTime() + 2
     end
     
-    function ENT:Use(client)
-        self:Toggle(client)
-    end
-    
-    function ENT:AlreadyOwned(cid)
-        local owners = string.Split( tostring( self:GetOwners() ), ";" )
-        if owners and !table.IsEmpty(owners) then
-            if table.HasValue(owners, tostring(cid)) then
+    function ENT:HasAccess(client, cid)
+        if (!cid) then return false end
+        if (!self.door) then return false end
+        local mapID = cid:GetData("doorMapID", -1)
+        local id = self.door:MapCreationID()
+        if (id > -1) then
+            if (mapID == id) then
                 return true
             end
         end
+        print("CID ID: " .. mapID .. "\nDoor ID: " .. id)
         return false
     end
-    
-    function ENT:AddOwner(cid)
-        if self:AlreadyOwned(cid) then return end
 
-        if self:GetOwners() == '' or self:GetOwners() == nil then
-            self:SetOwners( tostring( cid ) )
-        else
-            self:SetOwners( tostring( self:GetOwners() ) .. ';' .. tostring( cid ) )
-        end
-
-        hook.Run('ApartmentOwned', self, cid)
-    end
-    
-    function ENT:RemoveOwner(cid)
-        if !self:AlreadyOwned(cid) then return end
-        local owners = self:GetOwners()
-        local splitted = string.Split(owners, ';')
-    
-        for _, id in ipairs( splitted ) do
-            if id == tostring(cid) then
-                table.RemoveByValue(splitted, id)
-            end
-        end
-        
-        local concat = table.concat(splitted, ';')
-        self:SetOwners(tostring(concat))
-    
-        hook.Run('ApartmentUnowned', self, cid)
+    function ENT:Use(client)
+        self:Toggle(client)
     end
 end
 

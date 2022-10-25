@@ -1,3 +1,4 @@
+
 ITEM.name = "Apartment Lock"
 ITEM.description = "A metal apparatus applied to doors, utilised by the Combine Civil Authority for Apartments."  --A metal apparatus applied to doors.
 ITEM.price = 250

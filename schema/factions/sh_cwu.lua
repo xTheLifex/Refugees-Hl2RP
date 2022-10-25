@@ -1,6 +1,7 @@
 FACTION.name = "Civil Workers Union"
 FACTION.description = "Universal Union approved working shit."
-FACTION.color = Color(3, 152, 252)
+FACTION.color = Color(255, 200, 49)
+FACTION.pay = 15
 FACTION.models = {
 	{"models/fty/citizens/female_01.mdl", 0, "031"},
 	{"models/fty/citizens/female_02.mdl", 0, "031"},
@@ -37,8 +38,6 @@ function FACTION:OnCharacterCreated(client, character)
 	character:SetData("cid", id)
 
 	inventory:Add("suitcase", 1)
-	inventory:Add("cwu_jumpsuit", 1)
-	inventory:Add("jeans", 1)
 	inventory:Add("cid", 1, {
 		name = character:GetName(),
 		id = id

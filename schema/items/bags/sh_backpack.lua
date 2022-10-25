@@ -1,0 +1,9 @@
+ITEM.name = "Backpack"
+ITEM.description = "A backpack used to hold items."
+ITEM.model = "models/thrusters/jetpack.mdl"
+ITEM.category = "Storage"
+ITEM.width = 2
+ITEM.height = 2
+ITEM.invWidth = 3
+ITEM.invHeight = 4
+ITEM.isBag = true

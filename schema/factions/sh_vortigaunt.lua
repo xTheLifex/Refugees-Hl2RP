@@ -3,8 +3,12 @@ FACTION.description = "The Vortigaunts are a sapient alien species found through
 FACTION.color = Color(61, 155, 61)
 FACTION.isDefault = true
 FACTION.models = {
-	"models/vortigaunt.mdl"
+	"models/vortigaunt_slave.mdl"
 }
+
+function FACTION:GetDefaultName(client)
+	return "UU-BIOTIC:" .. Schema:ZeroNumber(math.random(1, 99999), 5), true
+end
 
 function FACTION:OnCharacterCreated(client, character)
 	local id = Schema:ZeroNumber(math.random(1, 99999), 5)

@@ -11,6 +11,8 @@
 
 if (SERVER) then
   util.AddNetworkString("RGASay")
+  util.AddNetworkString("RGAPlaySound")
+
   net.Receive("RGASay", function(len, ply) 
     if (!ply:IsCombine()) then return end
 
@@ -20,9 +22,29 @@ if (SERVER) then
     end
 
   end)
+
+  net.Receive("RGAPlaySound", function(len, ply) 
+    if (ply:IsCombine()) then return end
+
+    net.Start()
+    net.WriteString(net.ReadString())
+    net.Broadcast("RGAPlaySound")
+  end)
 end
 
 if (CLIENT) then
+
+  net.Receive("RGAPlaySound", function() 
+    local snd = net.ReadString()
+    if (!snd) then return end
+    surface.PlaySound(snd)
+  end)
+
+  local function Sound(snd)
+    net.Start("RGAPlaySound")
+    net.WriteString(snd)
+    net.SendToServer()
+  end
 
   local function GetPosGrid(pos)
     local x = math.Round(pos.x/500)
@@ -160,6 +182,18 @@ if (CLIENT) then
       end
     end
 
+    if (data["rank"]) then
+      local hasRank = Schema:IsCombineRank(client:Name(), data["rank"] or "OWS")
+      if (!hasRank) then return end
+    end
+
+    local isDisp = Schema:IsCombineRank(client:Name(), "DISP")
+    if (data["dispatch"] and data["dispatch"] == true) then
+      if (!isDisp) then return end
+    else
+      if (isDisp) then return end
+    end
+
 
     child, parent = menu:AddSubMenu(name)
     parent:SetIcon(data["icon"] or "icon16/transmit_blue.png")
@@ -187,9 +221,19 @@ if (CLIENT) then
     local formattedBearing = Reduce(GetBearing()) .. "; degrees"
     local radioPrefix = "/radio "
     local yellPrefix = "/y "
-    
+    local dispatchPrefix = "/dispatch "
+
+
+    local function Say(msg)
+      self:ClientSay(msg)
+    end
+
     local function Radio(msg)
       self:ClientSay(radioPrefix .. msg)
+    end
+
+    local function Dispatch(msg)
+      self:ClientSay(dispatchPrefix .. msg)
     end
 
     local function Yell(msg)
@@ -225,9 +269,97 @@ if (CLIENT) then
     
 
     
-    ----------- CIVIL PROTECTION
+    /* -------------------------------------------------------------------------- */
+    /*                              Civil Protection                              */
+    /* -------------------------------------------------------------------------- */
+
+
+    /* -------------------------------------------------------------------------- */
+    /*                                  Dispatch                                  */
+    /* -------------------------------------------------------------------------- */
+
+    local function Code(msg)
+      Visor("Receiving Overwatch Priority Orders. Code:" .. msg, colorBad)
+    end
+
+    /* ------------------------------- Radio Voice ------------------------------ */
+    local cityVoice = self:AddAssistantOption(menu, "City Broadcast", "icon16/transmit_blue.png", {
+      dispatch = true,
+      options = {
+        ["Anti-Citizen Reported in this community..."] = function() 
+          Visor("Updating socio-stability report...")
+          timer.Simple(2, function() Visor("Retrieving updates...") end)
+          timer.Simple(5, function() Visor("List Retrieved!") end)
+          timer.Simple(8, function() Visor("Standby for Overwatch Priority Announcement...", colorBad) end)
+
+          timer.Simple(10 + math.random(1,2), function() 
+            Code("LOCK, CAUTERIZE, STABILIZE")
+            timer.Simple(math.random(1,2), function() Dispatch("ANTI-CITIZEN") end)
+          end)
+          
+        end,
+        ["You are charged with A-C activity level: ONE..."] = function(arguments)
+          Visor("Updating socio-stability report...")
+          timer.Simple(2, function() Visor("Retrieving updates...") end)
+          timer.Simple(5, function() Visor("List Retrieved!") end)
+          timer.Simple(8, function() Visor("Standby for Overwatch Priority Announcement...", colorBad) end)
+
+          timer.Simple(10 + math.random(1,2), function() 
+            Code("DUTY, SWORD, OPERATE")
+            timer.Simple(math.random(1,2), function() Dispatch("ACTIVITY LEVEL 1") end)
+          end)
+
+        end,
+        ["Evidence of A-C Activity in this Community..."] = function() 
+          Visor("Updating socio-stability report...")
+          timer.Simple(2, function() Visor("Retrieving updates...") end)
+          timer.Simple(5, function() Visor("List Retrieved!") end)
+          timer.Simple(8, function() Visor("Standby for Overwatch Priority Announcement...", colorBad) end)
+
+          timer.Simple(10 + math.random(1,2), function() 
+            Code("ASSEMBLE, CLAMP, CONTAIN")
+            timer.Simple(math.random(1,2), function() Dispatch("ANTI-CIVIL EVIDENCE") end)
+          end)
+        end,
+        ["You're charged with Capital Malcomp. A-C Status."] = function()
+          Visor("Updating socio-stability report...")
+          timer.Simple(2, function() Visor("Retrieving updates...") end)
+          timer.Simple(5, function() Visor("List Retrieved!") end)
+          timer.Simple(8, function() Visor("Standby for Overwatch Priority Announcement...", colorBad) end)
+
+          timer.Simple(10 + math.random(1,2), function() 
+            Visor("Available units: ASSEMBLE, INTERCEDE, PROSECUTE.", colorBad)
+            timer.Simple(math.random(1,2), function() Dispatch("ARE CHARGED WITH") end)
+          end)
+        end,
+        ["Inspection Procedure"] = function() 
+          Visor("All units prepare " .. Pick({"for operation", "for citizen inspection", "for ID check procedures", "to administrate ID check."}))
+          timer.Simple(3, function() Visor("Available units move to Residental Areas and prepare for instructions...") end)
+          timer.Simple(30, function() Visor("Prepare to administrate citizen identification check...") end)
+          timer.Simple(35, function() Visor("Preparing citizen announcement...") end)
+          timer.Simple(37, function() Dispatch("ASSUME POSITIONS") end)
+          timer.Simple(90, function() Visor("Preparing citizen reminder...") end)
+          timer.Simple(94, function() Dispatch("INSPECTION") end)
+        end,
+        ["AUTONOMOUS JUDGEMENT"] = function()
+          timer.Simple(0, function() Visor("ALERT.", colorBad) end)
+          timer.Simple(3, function() Visor("ALERT.", colorBad) end)
+          timer.Simple(6, function() Visor("ALERT.", colorBad) end)
+          timer.Simple(12, function() Visor("PRIORITY ALERT.", colorBad) end)
+          timer.Simple(15, function() Visor("SOCIO-STABILITY REPORT: RED...", colorBad) end)
+          timer.Simple(24, function() Visor("STANDBY FOR OVERWATCH PRIORITY ANNOUNCEMENT...", colorBad) end)
+          timer.Simple(32, function() Dispatch("AUTONOMOUS JUDGMENT") end)
+          timer.Simple(34, function() Code("AMPUTATE, ZERO, CONFIRM") end)
+        end
+      }
+    })
+
+    /* ------------------------------- City Voice ------------------------------- */
+
     
-    ----------- OVERWATCH 
+    /* -------------------------------------------------------------------------- */
+    /*                                  Overwatch                                 */
+    /* -------------------------------------------------------------------------- */
     local radio = self:AddAssistantOption(menu, "Radio", "icon16/transmit_blue.png", {
       radio = true,
       faction = FACTION_OTA

@@ -405,6 +405,7 @@ Schema.voices.Add("Dispatch", "UNREST STRUCTURE", "Alert, community ground-prote
 Schema.voices.AddClass("OTA", function(client)
 	local char = client:GetCharacter()
     if (char) then
+        if (client:IsDispatch()) then return false end
         if (char:GetFaction() == FACTION_OTA) then
             return true
         end
@@ -422,6 +423,7 @@ Schema.voices.AddClass("CP", function(client)
     return false
 end)
 
+
 Schema.voices.AddClass("Dispatch", function(client)
-	return client:IsDispatch()
+    return client:IsDispatch()
 end)

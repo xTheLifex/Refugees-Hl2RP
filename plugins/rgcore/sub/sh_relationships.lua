@@ -23,7 +23,9 @@ if (SERVER) then
         "npc_combine_camera",
         "npc_combinedropship",
         "npc_hunter",
-        "npc_combinegunship"
+        "npc_combinegunship",
+        "npc_manhack",
+        "npc_sniper"
     }
     sides[SIDE_ANTLIONS] = {
         "npc_antlion",
