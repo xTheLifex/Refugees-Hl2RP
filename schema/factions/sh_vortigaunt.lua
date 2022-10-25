@@ -5,12 +5,10 @@ FACTION.isDefault = true
 FACTION.models = {
 	"models/vortigaunt_slave.mdl"
 }
-FACTION.isDefault = false
 
 function FACTION:GetDefaultName(client)
 	return "UU-BIOTIC:" .. Schema:ZeroNumber(math.random(1, 99999), 5), true
 end
-
 
 function FACTION:OnCharacterCreated(client, character)
 	local id = Schema:ZeroNumber(math.random(1, 99999), 5)

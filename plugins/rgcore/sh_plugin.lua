@@ -41,6 +41,7 @@ ix.util.Include("sub/sh_relationships.lua")
 ix.util.Include("sub/sh_voices.lua")
 ix.util.Include("sub/clothing/sh_clothing.lua")
 
+
 ix.option.Add("drawCrosshair", ix.type.bool, true, {
    category = "appearance"
 })
