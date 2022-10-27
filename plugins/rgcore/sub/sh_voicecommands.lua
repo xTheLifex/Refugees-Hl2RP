@@ -213,7 +213,7 @@ if (SERVER) then
         -- -------------------------------------------------------------------------- --
         --                                 Bird Import                                --
         -- -------------------------------------------------------------------------- --
-
+        local client = speaker
         if client:Team() == FACTION_BIRD then
             local randomBirdWords = {"Chirp","Caw","Squawk","Cheep"}
             if (chatType == "ic" or chatType == "w" or chatType == "y") and !ix.config.Get("birdChat", true) then
