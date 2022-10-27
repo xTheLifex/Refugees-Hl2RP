@@ -65,6 +65,36 @@ do
     })
 end
 
+do
+    ix.command.Add("SetHostile", {
+        description = "Sets someone as hostile for CP NPCs.",
+        superAdminOnly = true,
+        arguments = {
+            ix.type.player
+        },
+        OnRun = function(self, client, target) 
+            local rgcore = ix.plugin.Get("rgcore")
+            rgcore:FlagAsResistance(target, 2000)
+        end
+    })
+end
+
+do
+    ix.command.Add("SetFriendly", {
+        description = "Sets someone as hostile for CP NPCs.",
+        superAdminOnly = true,
+        arguments = {
+            ix.type.player
+        },
+        OnRun = function(self, client, target) 
+            local rgcore = ix.plugin.Get("rgcore")
+            rgcore:FlagAsResistance(target, 0)
+        end
+    })
+end
+
+
+
 function PLUGIN:GetMaxPlayerCharacter(client)
     return client:GetData("customMaxCharacters", ix.config.Get("maxCharacters", 5))
 end
