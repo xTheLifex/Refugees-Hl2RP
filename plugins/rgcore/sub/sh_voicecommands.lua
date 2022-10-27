@@ -203,10 +203,42 @@ if (SERVER) then
     end
 
     function Schema:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
+
+        -- --------------------------- Pass down to plugin -------------------------- --
         local rgcore = ix.plugin.Get("rgcore")
         if (rgcore) then
             rgcore:PlayerMessageSend(speaker, chatType, text, anonymous, receivers, rawText)
         end
+
+        -- -------------------------------------------------------------------------- --
+        --                                 Bird Import                                --
+        -- -------------------------------------------------------------------------- --
+
+        if client:Team() == FACTION_BIRD then
+            local randomBirdWords = {"Chirp","Caw","Squawk","Cheep"}
+            if (chatType == "ic" or chatType == "w" or chatType == "y") and !ix.config.Get("birdChat", true) then
+                local splitedText = string.Split(message, " ")
+                local birdtalk = {}
+    
+                for k, v in pairs(splitedText) do
+                    local word = table.Random(randomBirdWords)
+                    table.insert(birdtalk, word)
+                end
+                text = table.concat(birdtalk, " ")
+                ix.chat.Send(client, chatType, text)
+                return false
+            elseif (chatType == "me" or chatType == "it") and !ix.config.Get("birdActions", true) then
+                client:Notify("You are not able to use this command as Bird!")
+                return false
+            elseif chatType == "ooc" and !ix.config.Get("birdOOC", true) then
+                client:Notify("You are not able to use this command as Bird!")
+                return false
+            end
+        end
+        
+        -- -------------------------------------------------------------------------- --
+        --                        Separators and Pitched Voices                       --
+        -- -------------------------------------------------------------------------- --
         
         local separator = ix.config.Get("separatorVC", nil) != "" and ix.config.Get("separatorVC", nil) or nil
 
