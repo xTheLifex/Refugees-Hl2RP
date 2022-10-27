@@ -1,6 +1,14 @@
 
 ITEM.name = "Handheld Radio"
-ITEM.model = Model("models/Items/battery.mdl")
+ITEM.model = "models/dpfilms/metropolice/props/metrold_radio.mdl"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.iconCam = {
+	pos = Vector(140.35, 46.2, 126.21),
+	ang = Angle(23.76, 201.09, 0),
+	fov = 3.59
+}
+
 ITEM.description = "A shiny handheld radio with a frequency tuner.\nIt is currently turned %s%s."
 ITEM.cost = 50
 ITEM.classes = {CLASS_EMP, CLASS_EOW}
