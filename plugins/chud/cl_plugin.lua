@@ -117,6 +117,9 @@ local function fCitizen( client )
   if ( !IsValid( client ) ) then
     return
   end
+  if (client:GetMoveType() == MOVETYPE_NOCLIP) then
+    return
+  end
   local bone = client:LookupBone( "ValveBiped.Bip01_Head1" )
   local pos
   -- In case a model doesn't have a headbone
@@ -188,6 +191,9 @@ local function fMetropolice( client )
   if ( !IsValid( client ) ) then
     return
   end
+  if (client:GetMoveType() == MOVETYPE_NOCLIP) then
+    return
+  end
   local bone = client:LookupBone( "ValveBiped.Bip01_Head1" )
   local pos
   if ( !bone ) then
@@ -202,7 +208,7 @@ local function fMetropolice( client )
   if ( !LocalPlayer():IsLineOfSightClear( client ) ) then
     return
   end
-
+  
   local distSquared = 224^2
 
   local toScreen = pos:ToScreen()
@@ -250,6 +256,9 @@ PLUGIN:AddFactionCall( FACTION_MPF, fMetropolice )
 
 local function fOverwatch( client )
   if ( !IsValid( client ) ) then
+    return
+  end
+  if (client:GetMoveType() == MOVETYPE_NOCLIP) then
     return
   end
   local bone = client:LookupBone( "ValveBiped.Bip01_Head1" )
