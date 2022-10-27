@@ -37,6 +37,7 @@ function PLUGIN:AddClothingItemTable(t)
         ITEM.onlyMale = data.onlyMale or false
         ITEM.factions = data.factions or {FACTION_CITIZEN, FACTION_CWU, FACTION_CMU}
         ITEM.models = data.models or {}
+        ITEM.armor = data.armor or 0
         ITEM.canDrop = data.canDrop or function() return true end
         ITEM.canWear = data.canWear or function() return true end
         ITEM.canUnwear = data.canUnwear or function() return true end
@@ -66,6 +67,9 @@ function PLUGIN:AddClothingItemTable(t)
                         self:SetPlayerBodygroup(client, name, val)
                         snd = true
                     end
+                end
+                if (item.armor) then
+                    client:SetArmor(item.armor)
                 end
                 if (snd) then client:EmitSound("npc/zombie/foot_slide" .. math.random(1, 3) .. ".wav", 75, math.random(90, 120), 1) end
                 return false
@@ -142,6 +146,9 @@ function PLUGIN:AddClothingItemTable(t)
                         self:SetPlayerBodygroup(client, name, 0)
                         snd = true
                     end
+                end
+                if (item.armor) then
+                    client:SetArmor(math.Clamp(client:Armor() - item.armor, 0, 255))
                 end
                 if (snd) then client:EmitSound("npc/zombie/foot_slide" .. math.random(1, 3) .. ".wav", 75, math.random(90, 120), 1) end
                 return false
