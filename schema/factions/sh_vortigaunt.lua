@@ -1,7 +1,6 @@
 FACTION.name = "Vortigaunt"
 FACTION.description = "The Vortigaunts are a sapient alien species found throughout the Half-Life series."
 FACTION.color = Color(61, 155, 61)
-FACTION.isDefault = true
 FACTION.models = {
 	"models/vortigaunt_slave.mdl"
 }
