@@ -25,7 +25,8 @@ if (SERVER) then
         "npc_hunter",
         "npc_combinegunship",
         "npc_manhack",
-        "npc_sniper"
+        "npc_sniper",
+        "npc_rp_combine_s"
     }
     sides[SIDE_ANTLIONS] = {
         "npc_antlion",
@@ -201,6 +202,7 @@ if (SERVER) then
     end
     
     function PLUGIN:GetSideRelationship(side, other)
+        if (side == other) then return D_LI end
         local relation = relations[side]
         if (!relation) then return nil end
         return relation[other] or nil

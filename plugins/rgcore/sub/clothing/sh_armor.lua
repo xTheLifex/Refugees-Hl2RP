@@ -30,7 +30,7 @@ local items = {
     ["armor_rebelcp"] = {
         name = "Repurposed CP Kevlar",
         model = "models/fty/items/shirt_rebelmetrocop.mdl",
-        armor = 40
+        armor = 40,
         groups = {
             ["kevlar"] = 4
         }
@@ -38,7 +38,7 @@ local items = {
     ["armor_kevlar"] = {
         name = "Heavy Kevlar",
         model = "models/fty/items/shirt_rebelmetrocop.mdl",
-        armor = 70
+        armor = 70,
         groups = {
             ["kevlar"] = 5
         }
