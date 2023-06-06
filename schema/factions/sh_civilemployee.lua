@@ -1,6 +1,6 @@
-FACTION.name = "Civil Medical Union"
-FACTION.description = "Universal Union doctors."
-FACTION.color = Color(255, 77, 41)
+FACTION.name = "Civil Employee"
+FACTION.description = "Official employees working under the city administration."
+FACTION.color = Color(228, 154, 27)
 FACTION.pay = 1
 FACTION.models = {
 	{ "models/fty/citizens/female_01.mdl", 0, "0h9" },
@@ -29,17 +29,16 @@ FACTION.models = {
 }
 FACTION.isDefault = false
 FACTION.isGloballyRecognized = false
-FACTION_CMU = FACTION.index
+FACTION_EMPLOYEE = FACTION.index
 
 function FACTION:OnCharacterCreated(client, character)
 	local id = Schema:ZeroNumber(math.random(1, 99999), 5)
 	local inventory = character:GetInventory()
 
 	character:SetData("cid", id)
-
+	inventory:Add("pants_fancy_black")
+	inventory:Add("suit_black")
 	inventory:Add("suitcase", 1)
-	inventory:Add("jumpsuit_cmu_d", 1)
-	inventory:Add("jeans_blue", 1)
 	inventory:Add("cid", 1, {
 		name = character:GetName(),
 		id = id

@@ -4,29 +4,24 @@ FACTION.description = "A regular human citizen enslaved by the Universal Union."
 FACTION.color = Color(150, 125, 100, 255)
 FACTION.isDefault = true
 FACTION.models = {
-	"models/fty/citizens/female_01.mdl",
-	"models/fty/citizens/female_02.mdl",
-	"models/fty/citizens/female_03.mdl",
-	"models/fty/citizens/female_04.mdl",
-	"models/fty/citizens/female_05.mdl",
-	"models/fty/citizens/female_06.mdl",
-	"models/fty/citizens/female_07.mdl",
-	"models/fty/citizens/female_08.mdl",
-	"models/fty/citizens/female_10.mdl",
-	"models/fty/citizens/female_11.mdl",
-	"models/fty/citizens/female_17.mdl",
-	"models/fty/citizens/female_19.mdl",
-	"models/fty/citizens/female_21.mdl",
-	"models/fty/citizens/female_22.mdl",
-	"models/fty/citizens/male_01.mdl",
-	"models/fty/citizens/male_02.mdl",
-	"models/fty/citizens/male_03.mdl",
-	"models/fty/citizens/male_04.mdl",
-	"models/fty/citizens/male_05.mdl",
-	"models/fty/citizens/male_06.mdl",
-	"models/fty/citizens/male_07.mdl",
-	"models/fty/citizens/male_08.mdl",
-	"models/fty/citizens/male_09.mdl"
+	"models/humans/pandafishizens/female_01.mdl",
+	"models/humans/pandafishizens/female_02.mdl",
+	"models/humans/pandafishizens/female_03.mdl",
+	"models/humans/pandafishizens/female_04.mdl",
+	"models/humans/pandafishizens/female_06.mdl",
+	"models/humans/pandafishizens/female_07.mdl",
+	"models/humans/pandafishizens/female_11.mdl",
+	"models/humans/pandafishizens/female_17.mdl",
+	"models/humans/pandafishizens/female_19.mdl",
+	"models/humans/pandafishizens/male_01.mdl",
+	"models/humans/pandafishizens/male_02.mdl",
+	"models/humans/pandafishizens/male_03.mdl",
+	"models/humans/pandafishizens/male_04.mdl",
+	"models/humans/pandafishizens/male_05.mdl",
+	"models/humans/pandafishizens/male_06.mdl",
+	"models/humans/pandafishizens/male_07.mdl",
+	"models/humans/pandafishizens/male_08.mdl",
+	"models/humans/pandafishizens/male_09.mdl"
 }
 
 function FACTION:OnCharacterCreated(client, character)
@@ -37,7 +32,8 @@ function FACTION:OnCharacterCreated(client, character)
 
 	inventory:Add("suitcase", 1)
 	inventory:Add("jumpsuit", 1)
-	inventory:Add("blue_jeans", 1)
+	inventory:Add("jeans_blue", 1)
+	--inventory:Add("blue_jeans", 1)
 	inventory:Add("cid", 1, {
 		name = character:GetName(),
 		id = id
