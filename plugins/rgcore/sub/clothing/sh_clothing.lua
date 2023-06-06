@@ -20,22 +20,23 @@ end
 
 function PLUGIN:AddClothingItemTable(t)
     for id, data in pairs(t) do
-        print("[RG Clothing] Registering " .. id)
+        --print("[RG Clothing] Registering " .. id)
         local ITEM = ix.item.Register(id, nil, false, nil, true)
         if (!ITEM) then
             print("[RG Clothing] Failed to register " .. id )
-            continue
+            break
         end
         ITEM.name = data.name or "Unknown Clothing Item"
         ITEM.description = data.desc or "This item can be worn."
-        ITEM.model = data.model or "models/fty/items/shirt_citizen1.mdl"
+        ITEM.model = data.model or "models/props_c17/BriefCase001a.mdl"
+        ITEM.category = data.category or "Wearables"
         ITEM.skin = data.skin or 0
         ITEM.groups = data.groups or {}
         ITEM.groups_female = data.groups_female or {}
         ITEM.groups_male = data.groups_male or {}
         ITEM.onlyFemale = data.onlyFemale or false
         ITEM.onlyMale = data.onlyMale or false
-        ITEM.factions = data.factions or {FACTION_CITIZEN, FACTION_CWU, FACTION_CMU}
+        ITEM.factions = data.factions or {FACTION_CITIZEN, FACTION_CWU, FACTION_CMU, FACTION_EMPLOYEE}
         ITEM.models = data.models or {}
         ITEM.armor = data.armor or 0
         ITEM.canDrop = data.canDrop or function() return true end
@@ -279,6 +280,12 @@ function PLUGIN:AddClothingItemTable(t)
                 return false
             end
         }
+        -- Apply custom functions
+        if (data.functions) then
+            for id, funcdata in pairs(data.functions) do
+                ITEM.functions[id] = funcdata
+            end
+        end
     end
 end
 
