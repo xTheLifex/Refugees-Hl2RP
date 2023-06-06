@@ -59,7 +59,9 @@ function PLUGIN:AddFoodItemTable(t)
                     for item, amount in pairs(data.pack) do
                         for i=1, amount do
 							if (item == "token" or item == "tokens") then
-								
+                                local tokens = ix.config.Get("rationTokens", 20)
+                                if (amount > 0) then tokens = amount end
+								character:GiveMoney(tokens)
 							else
 								if (!inventory:Add(item)) then
 									ix.item.Spawn(item, client)

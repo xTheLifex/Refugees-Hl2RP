@@ -205,7 +205,8 @@ local items = {
         pack = {
             ["mre_citizen"] = 1,
             ["water_murky"] = 1,
-            ["box_standard"] = 1
+            ["box_standard"] = 1,
+            ["tokens"] = 0, -- 0 or less syncs with config for "ration tokens."
         }
     },
     ["ration_minimal"] = {
@@ -220,10 +221,11 @@ local items = {
         name = "Loyalist Rations",
         model = "models/weapons/w_packatl.mdl",
         pack = {
-            ["supplement_priority"] = 2,
+            ["supplement_priority"] = 1,
             ["water_union"] = 1,
-            ["mre_loyalist"] = 3,
-            ["box_loyalist"] = 2,
+            ["mre_loyalist"] = 2,
+            ["box_loyalist"] = 1,
+            ["tokens"] = 15,
         }
     },
     ["ration_metropolice"] = {
@@ -233,7 +235,7 @@ local items = {
             ["supplement_metropolice"] = 2,
             ["water_union"] = 1,
             ["mre_metropolice"] = 3,
-            ["box_metropolice"] = 1,
+            ["box_metropolice"] = 1
         }
     },
     ["ration_priority"] = {
@@ -244,6 +246,7 @@ local items = {
             ["water_union"] = 1,
             ["mre_loyalist"] = 3,
             ["box_priority"] = 1,
+            ["tokens"] = 100
         }
     }
 }
