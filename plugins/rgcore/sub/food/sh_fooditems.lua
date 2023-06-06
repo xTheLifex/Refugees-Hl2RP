@@ -225,7 +225,7 @@ local items = {
             ["water_union"] = 1,
             ["mre_loyalist"] = 2,
             ["box_loyalist"] = 1,
-            ["tokens"] = 15,
+            ["tokens"] = 5,
         }
     },
     ["ration_metropolice"] = {
@@ -246,7 +246,7 @@ local items = {
             ["water_union"] = 1,
             ["mre_loyalist"] = 3,
             ["box_priority"] = 1,
-            ["tokens"] = 100
+            ["tokens"] = 15
         }
     }
 }
