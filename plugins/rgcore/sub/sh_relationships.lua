@@ -110,7 +110,8 @@ if (SERVER) then
     local combines = {
         [FACTION_MPF] = true,
         [FACTION_ADMIN] = true,
-        [FACTION_OTA] = true
+        [FACTION_OTA] = true,
+        [FACTION_EMPLOYEE] = true
     }
     local citizens = {
         [FACTION_CITIZEN] = true,
@@ -124,6 +125,14 @@ if (SERVER) then
             return nil
         end
         local myclass = npc:GetClass()
+
+        if (myclass == "npc_citizen") then
+            if (npc:GetActiveWeapon() ~= nil) then
+                return SIDE_RESISTANCE
+            else
+                return SIDE_CIVILIAN
+            end
+        end
 
         for side, tab in pairs(sides) do
             for _, class in ipairs(tab) do
@@ -160,7 +169,8 @@ if (SERVER) then
                 ["weapon_ar2"] = true,
                 ["weapon_grenade"] = true,
                 ["weapon_shotgun"] = true,
-                ["weapon_rpg"] = true
+                ["weapon_rpg"] = true,
+                ["ix_pistol"] = true,
             }
 
             local hasGuns = guns[ply:GetActiveWeapon()] or false
@@ -168,7 +178,7 @@ if (SERVER) then
             local inv = char:GetInventory()
             if (inv) then
                 if (inv:HasItemOfBase('base_weapons', {["equip"] = true}) or hasGuns) then
-                    self:FlagAsResistance(ply, 60)
+                    self:FlagAsResistance(ply, 600)
                     return SIDE_RESISTANCE
                 end
             end
@@ -197,6 +207,7 @@ if (SERVER) then
             return SIDE_CIVILIAN
         end
 
+        if (faction == FACTION_BIRD) then return SIDE_BIRDS end
 
         return nil
     end
